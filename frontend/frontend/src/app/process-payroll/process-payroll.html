@@ -1,0 +1,155 @@
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+
+    <div>
+      <h1>Process Payroll</h1>
+      <p>Process monthly employee payroll</p>
+    </div>
+
+    <button
+      class="back-btn"
+      (click)="cancel()">
+      ← Back to Payroll
+    </button>
+
+  </div>
+
+
+  <!-- Form Card -->
+  <div class="form-card">
+
+    <h2>Payroll Information</h2>
+
+    <form>
+
+      <div class="form-grid">
+
+        <!-- Employee -->
+        <div class="form-group">
+
+          <label>Employee</label>
+
+          <select>
+
+            <option value="">Select Employee</option>
+
+            <option>
+              EMP001 - Aditya Sharma
+            </option>
+
+            <option>
+              EMP002 - Rahul Kumar
+            </option>
+
+            <option>
+              EMP003 - Priya Singh
+            </option>
+
+            <option>
+              EMP004 - Ananya Mehta
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Payroll Month -->
+        <div class="form-group">
+
+          <label>Payroll Month</label>
+
+          <input
+            type="month">
+
+        </div>
+
+
+        <!-- Basic Salary -->
+        <div class="form-group">
+
+          <label>Basic Salary</label>
+
+          <input
+            type="number"
+            placeholder="Enter basic salary">
+
+        </div>
+
+
+        <!-- Allowances -->
+        <div class="form-group">
+
+          <label>Allowances</label>
+
+          <input
+            type="number"
+            placeholder="Enter allowances">
+
+        </div>
+
+
+        <!-- Deductions -->
+        <div class="form-group">
+
+          <label>Deductions</label>
+
+          <input
+            type="number"
+            placeholder="Enter deductions">
+
+        </div>
+
+
+        <!-- Bonus -->
+        <div class="form-group">
+
+          <label>Bonus</label>
+
+          <input
+            type="number"
+            placeholder="Enter bonus">
+
+        </div>
+
+      </div>
+
+
+      <!-- Remarks -->
+      <div class="form-group full-width">
+
+        <label>Remarks</label>
+
+        <textarea
+          rows="4"
+          placeholder="Enter remarks..."></textarea>
+
+      </div>
+
+
+      <!-- Buttons -->
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="cancel()">
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="process-btn"
+          (click)="processPayroll()">
+          Process Payroll
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

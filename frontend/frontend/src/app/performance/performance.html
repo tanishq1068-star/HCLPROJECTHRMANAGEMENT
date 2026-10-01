@@ -1,0 +1,413 @@
+<div class="page-container">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Performance Management</h1>
+      <p>
+        Track employee performance, goals, ratings and review progress.
+      </p>
+    </div>
+
+    <a
+      routerLink="/performance-details"
+      class="btn btn-primary"
+    >
+      + Add Performance Review
+    </a>
+
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        👥
+      </div>
+
+      <div>
+        <span>Total Reviews</span>
+        <strong>
+          {{ totalReviews }}
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        ★
+      </div>
+
+      <div>
+        <span>Average Rating</span>
+        <strong>
+          {{ averageRating }}
+          / 5
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        ✓
+      </div>
+
+      <div>
+        <span>Completed</span>
+        <strong>
+          {{ completedCount }}
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        ⏳
+      </div>
+
+      <div>
+        <span>In Progress</span>
+        <strong>
+          {{ inProgressCount }}
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        !
+      </div>
+
+      <div>
+        <span>Pending</span>
+        <strong>
+          {{ pendingCount }}
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card filters-card">
+
+    <div class="filters">
+
+      <div class="search-box">
+
+        <span class="search-icon">
+          ⌕
+        </span>
+
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Search employee, ID, department or manager..."
+        />
+
+      </div>
+
+      <div class="filter-group">
+
+        <label>
+          Status
+        </label>
+
+        <select
+          [(ngModel)]="statusFilter"
+        >
+
+          <option value="All Status">
+            All Status
+          </option>
+
+          <option value="Completed">
+            Completed
+          </option>
+
+          <option value="In Progress">
+            In Progress
+          </option>
+
+          <option value="Pending">
+            Pending
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card table-card">
+
+    <div class="table-header">
+
+      <div>
+        <h2>
+          Performance Reviews
+        </h2>
+
+        <p>
+          {{ filteredPerformance.length }}
+          review{{ filteredPerformance.length === 1 ? '' : 's' }}
+          found
+        </p>
+      </div>
+
+    </div>
+
+    <div
+      class="table-wrapper"
+      *ngIf="
+        filteredPerformance.length > 0;
+        else emptyState
+      "
+    >
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Employee
+            </th>
+
+            <th>
+              Department
+            </th>
+
+            <th>
+              Review Period
+            </th>
+
+            <th>
+              Rating
+            </th>
+
+            <th>
+              Goals
+            </th>
+
+            <th>
+              Manager
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let record of filteredPerformance
+            "
+          >
+
+            <td>
+
+              <div class="employee-cell">
+
+                <div class="employee-avatar">
+                  {{ record.employeeName.charAt(0) }}
+                </div>
+
+                <div>
+
+                  <strong>
+                    {{ record.employeeName }}
+                  </strong>
+
+                  <span>
+                    {{ record.employeeId }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+              {{ record.department }}
+            </td>
+
+            <td>
+              {{ record.reviewPeriod }}
+            </td>
+
+            <td>
+
+              <div class="rating-cell">
+
+                <div class="stars">
+
+                  <span
+                    *ngFor="let star of getStars(record.rating)"
+                    [class.filled]="star === 'filled'"
+                  >
+                    ★
+                  </span>
+
+                </div>
+
+                <strong>
+                  {{ record.rating }}
+                </strong>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              <div class="goal-cell">
+
+                <div class="goal-text">
+
+                  <strong>
+                    {{ record.goalsCompleted }}/{{ record.totalGoals }}
+                  </strong>
+
+                  <span>
+                    {{ getGoalPercentage(record) }}%
+                  </span>
+
+                </div>
+
+                <div class="progress-track">
+
+                  <div
+                    class="progress-fill"
+                    [style.width.%]="
+                      getGoalPercentage(record)
+                    "
+                  ></div>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+              {{ record.manager }}
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="{
+                  'status-active':
+                    record.status === 'Completed',
+
+                  'status-pending':
+                    record.status === 'In Progress',
+
+                  'status-inactive':
+                    record.status === 'Pending'
+                }"
+              >
+                {{ record.status }}
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <a
+                  class="action-btn view"
+                  [routerLink]="[
+                    '/performance-details',
+                    record.id
+                  ]"
+                >
+                  View
+                </a>
+
+                <a
+                  class="action-btn edit"
+                  [routerLink]="[
+                    '/performance-details',
+                    record.id
+                  ]"
+                >
+                  Edit
+                </a>
+
+                <button
+                  type="button"
+                  class="action-btn delete"
+                  (click)="deletePerformance(record.id)"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <ng-template #emptyState>
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          ★
+        </div>
+
+        <h3>
+          No performance reviews found
+        </h3>
+
+        <p>
+          Try changing your search or status filter,
+          or create a new performance review.
+        </p>
+
+        <a
+          routerLink="/performance-details"
+          class="btn btn-primary"
+        >
+          + Add Performance Review
+        </a>
+
+      </div>
+
+    </ng-template>
+
+  </div>
+
+</div>

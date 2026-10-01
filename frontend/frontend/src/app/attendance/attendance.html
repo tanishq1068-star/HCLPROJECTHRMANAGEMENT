@@ -1,0 +1,515 @@
+<div class="attendance-page">
+
+  <!-- ================= PAGE HEADER ================= -->
+
+  <div class="page-header">
+
+    <div>
+      <h1>Attendance</h1>
+      <p>Track and manage employee attendance</p>
+    </div>
+
+    <button
+      type="button"
+      class="primary-btn"
+      (click)="openAttendanceModal()">
+      + Mark Attendance
+    </button>
+
+  </div>
+
+
+  <!-- ================= SUMMARY CARDS ================= -->
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+      <div class="summary-icon">
+        👥
+      </div>
+
+      <div>
+        <p>Total Marked</p>
+        <h2>{{ totalMarked }}</h2>
+      </div>
+    </div>
+
+
+    <div class="summary-card">
+      <div class="summary-icon">
+        ✅
+      </div>
+
+      <div>
+        <p>Present</p>
+        <h2>{{ totalPresent }}</h2>
+      </div>
+    </div>
+
+
+    <div class="summary-card">
+      <div class="summary-icon">
+        ❌
+      </div>
+
+      <div>
+        <p>Absent</p>
+        <h2>{{ totalAbsent }}</h2>
+      </div>
+    </div>
+
+
+    <div class="summary-card">
+      <div class="summary-icon">
+        ⏰
+      </div>
+
+      <div>
+        <p>Late</p>
+        <h2>{{ totalLate }}</h2>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ================= FILTERS ================= -->
+
+  <div class="filter-card">
+
+    <div class="filter-group">
+
+      <label>Date</label>
+
+      <input
+        type="date"
+        [(ngModel)]="filterDate"
+        (ngModelChange)="applyFilters()"
+        name="filterDate">
+
+    </div>
+
+
+    <div class="filter-group">
+
+      <label>Employee</label>
+
+      <select
+        [(ngModel)]="filterEmployee"
+        (ngModelChange)="applyFilters()"
+        name="filterEmployee">
+
+        <option value="">
+          All Employees
+        </option>
+
+        <option
+          *ngFor="let employee of employees"
+          [value]="employee.employeeId || employee.id">
+
+          {{ employee.name || employee.fullName || employee.employeeName }}
+
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="filter-group">
+
+      <label>Status</label>
+
+      <select
+        [(ngModel)]="filterStatus"
+        (ngModelChange)="applyFilters()"
+        name="filterStatus">
+
+        <option value="">
+          All Status
+        </option>
+
+        <option value="Present">
+          Present
+        </option>
+
+        <option value="Absent">
+          Absent
+        </option>
+
+        <option value="Late">
+          Late
+        </option>
+
+        <option value="Half Day">
+          Half Day
+        </option>
+
+        <option value="On Leave">
+          On Leave
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <button
+      type="button"
+      class="clear-btn"
+      (click)="clearFilters()">
+
+      Clear
+
+    </button>
+
+  </div>
+
+
+  <!-- ================= RECORDS ================= -->
+
+  <div class="attendance-card">
+
+    <div class="card-header">
+
+      <div>
+
+        <h2>Attendance Records</h2>
+
+        <p>
+          {{ filteredRecords.length }} records
+        </p>
+
+      </div>
+
+      <span class="record-count">
+        {{ filteredRecords.length }} records
+      </span>
+
+    </div>
+
+
+    <!-- ================= TABLE ================= -->
+
+    <div
+      class="table-wrapper"
+      *ngIf="filteredRecords.length > 0">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Employee</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+            <th>Remarks</th>
+            <th>Action</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let record of filteredRecords">
+
+            <td>
+
+              <strong>
+                {{ record.employeeName }}
+              </strong>
+
+              <small>
+                ID: {{ record.employeeId }}
+              </small>
+
+            </td>
+
+
+            <td>
+              {{ record.date }}
+            </td>
+
+
+            <td>
+
+              <span
+                class="status-badge"
+                [class.present]="record.status === 'Present'"
+                [class.absent]="record.status === 'Absent'"
+                [class.late]="record.status === 'Late'">
+
+                {{ record.status }}
+
+              </span>
+
+            </td>
+
+
+            <td>
+              {{ record.checkIn || '-' }}
+            </td>
+
+
+            <td>
+              {{ record.checkOut || '-' }}
+            </td>
+
+
+            <td>
+              {{ record.remarks || '-' }}
+            </td>
+
+
+            <td>
+
+              <button
+                type="button"
+                class="delete-btn"
+                (click)="deleteAttendance(record)">
+
+                Delete
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- ================= EMPTY STATE ================= -->
+
+    <div
+      class="empty-state"
+      *ngIf="filteredRecords.length === 0">
+
+      <div class="empty-icon">
+        📋
+      </div>
+
+      <h3>
+        No attendance records found.
+      </h3>
+
+      <p>
+        Click "Mark Attendance" to add an attendance record.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- MARK ATTENDANCE MODAL -->
+<!-- ================================================= -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showModal"
+  (click)="closeModal()">
+
+  <div
+    class="attendance-modal"
+    (click)="$event.stopPropagation()">
+
+
+    <!-- ================= MODAL HEADER ================= -->
+
+    <div class="modal-header">
+
+      <h2>
+        Mark Attendance
+      </h2>
+
+      <button
+        type="button"
+        class="close-btn"
+        (click)="closeModal()">
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <!-- ================= MODAL BODY ================= -->
+
+    <div class="modal-body">
+
+
+      <!-- EMPLOYEE -->
+
+      <div class="form-group">
+
+        <label>
+          Employee
+        </label>
+
+        <select
+          [(ngModel)]="attendance.employeeId"
+          (ngModelChange)="onEmployeeChange()"
+          name="employeeId">
+
+          <option value="">
+            Select employee
+          </option>
+
+          <option
+            *ngFor="let employee of employees"
+            [value]="employee.employeeId || employee.id">
+
+            {{ employee.name || employee.fullName || employee.employeeName }}
+
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- DATE -->
+
+      <div class="form-group">
+
+        <label>
+          Date
+        </label>
+
+        <input
+          type="date"
+          [(ngModel)]="attendance.date"
+          name="date">
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div class="form-group">
+
+        <label>
+          Status
+        </label>
+
+        <select
+          [(ngModel)]="attendance.status"
+          name="status">
+
+          <option value="Present">
+            Present
+          </option>
+
+          <option value="Absent">
+            Absent
+          </option>
+
+          <option value="Late">
+            Late
+          </option>
+
+          <option value="Half Day">
+            Half Day
+          </option>
+
+          <option value="On Leave">
+            On Leave
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- CHECK IN -->
+
+      <div class="form-group">
+
+        <label>
+          Check In
+        </label>
+
+        <input
+          type="time"
+          [(ngModel)]="attendance.checkIn"
+          name="checkIn">
+
+      </div>
+
+
+      <!-- CHECK OUT -->
+
+      <div class="form-group">
+
+        <label>
+          Check Out
+        </label>
+
+        <input
+          type="time"
+          [(ngModel)]="attendance.checkOut"
+          name="checkOut">
+
+      </div>
+
+
+      <!-- REMARKS -->
+
+      <div class="form-group">
+
+        <label>
+          Remarks
+        </label>
+
+        <textarea
+          [(ngModel)]="attendance.remarks"
+          name="remarks"
+          rows="3"
+          placeholder="Enter remarks"></textarea>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================= MODAL FOOTER ================= -->
+
+    <div class="modal-footer">
+
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="closeModal()">
+
+        Cancel
+
+      </button>
+
+
+      <button
+        type="button"
+        class="save-btn"
+        (click)="saveAttendance()">
+
+        Save Attendance
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

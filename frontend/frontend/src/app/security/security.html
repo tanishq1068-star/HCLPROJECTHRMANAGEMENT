@@ -1,0 +1,269 @@
+<div class="settings-page">
+
+  <!-- =========================
+       HEADER
+       ========================= -->
+  <div class="settings-header">
+
+    <div class="header-content">
+      <h1>Security</h1>
+      <p>Manage your account password and security settings.</p>
+    </div>
+
+    <a
+      routerLink="/settings"
+      class="back-btn"
+    >
+      ← Back to Settings
+    </a>
+
+  </div>
+
+
+  <!-- =========================
+       SECURITY CARDS
+       ========================= -->
+  <div class="security-list">
+
+
+    <!-- =========================
+         ACCOUNT PASSWORD
+         ========================= -->
+    <div class="security-card">
+
+      <div class="security-icon password-icon">
+        🔐
+      </div>
+
+      <div class="security-content">
+
+        <h2>Account Password</h2>
+
+        <p>
+          Change your current password to keep your HRGenius account secure.
+        </p>
+
+        <div class="security-info">
+          <span class="info-dot"></span>
+          <span>Last password change: Never</span>
+        </div>
+
+      </div>
+
+      <a
+        routerLink="/change-password"
+        class="security-btn primary"
+      >
+        Change Password
+      </a>
+
+    </div>
+
+
+    <!-- =========================
+         TWO FACTOR AUTHENTICATION
+         ========================= -->
+    <div class="security-card">
+
+      <div class="security-icon two-factor-icon">
+        🛡️
+      </div>
+
+      <div class="security-content">
+
+        <h2>Two-Factor Authentication</h2>
+
+        <p>
+          Add an extra layer of protection to your HRGenius account.
+        </p>
+
+        <div class="security-status">
+
+          <span
+            class="status-dot"
+            [class.active]="twoFactorEnabled"
+            [class.inactive]="!twoFactorEnabled"
+          ></span>
+
+          <span>
+            {{ twoFactorEnabled ? 'Enabled' : 'Not enabled' }}
+          </span>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="security-btn secondary"
+        (click)="enableTwoFactor()"
+        [disabled]="twoFactorEnabled"
+      >
+        {{ twoFactorEnabled ? 'Enabled' : 'Enable' }}
+      </button>
+
+    </div>
+
+
+    <!-- =========================
+         LOGIN SESSIONS
+         ========================= -->
+    <div class="security-card">
+
+      <div class="security-icon session-icon">
+        💻
+      </div>
+
+      <div class="security-content">
+
+        <h2>Login Sessions</h2>
+
+        <p>
+          Review the devices and browsers currently signed in to your account.
+        </p>
+
+        <div class="security-info">
+
+          <span class="info-dot active"></span>
+
+          <span>1 active session</span>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="security-btn secondary"
+        (click)="viewSessions()"
+      >
+        View Sessions
+      </button>
+
+    </div>
+
+
+    <!-- =========================
+         LOGIN ACTIVITY
+         ========================= -->
+    <div class="security-card">
+
+      <div class="security-icon activity-icon">
+        📊
+      </div>
+
+      <div class="security-content">
+
+        <h2>Login Activity</h2>
+
+        <p>
+          Monitor recent login activity and keep track of account access.
+        </p>
+
+        <div class="security-info">
+
+          <span class="info-dot active"></span>
+
+          <span>Account activity looks normal</span>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="security-btn secondary"
+        (click)="viewActivity()"
+      >
+        View Activity
+      </button>
+
+    </div>
+
+
+    <!-- =========================
+         EMAIL SECURITY
+         ========================= -->
+    <div class="security-card">
+
+      <div class="security-icon email-icon">
+        ✉️
+      </div>
+
+      <div class="security-content">
+
+        <h2>Email Security</h2>
+
+        <p>
+          Manage your account email and security notifications.
+        </p>
+
+        <div class="security-info">
+
+          <span class="info-dot active"></span>
+
+          <span>Email verified</span>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="security-btn secondary"
+        (click)="manageEmail()"
+      >
+        Manage
+      </button>
+
+    </div>
+
+
+    <!-- =========================
+         SECURITY ALERTS
+         ========================= -->
+    <div class="security-card">
+
+      <div class="security-icon alert-icon">
+        🔔
+      </div>
+
+      <div class="security-content">
+
+        <h2>Security Alerts</h2>
+
+        <p>
+          Receive notifications when unusual account activity is detected.
+        </p>
+
+        <div class="security-status">
+
+          <span
+            class="status-dot"
+            [class.active]="securityAlertsEnabled"
+            [class.inactive]="!securityAlertsEnabled"
+          ></span>
+
+          <span>
+            {{ securityAlertsEnabled
+              ? 'Alerts enabled'
+              : 'Alerts disabled' }}
+          </span>
+
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="security-btn secondary"
+        (click)="configureAlerts()"
+      >
+        {{ securityAlertsEnabled ? 'Disable' : 'Enable' }}
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

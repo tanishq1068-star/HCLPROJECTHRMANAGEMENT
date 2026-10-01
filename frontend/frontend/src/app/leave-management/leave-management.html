@@ -1,0 +1,539 @@
+<div class="leave-page">
+
+  <!-- =========================
+       PAGE HEADER
+  ========================== -->
+  <div class="page-header">
+
+    <div class="header-content">
+      <h1>Leave Management</h1>
+      <p>Manage employee leave requests and balances.</p>
+    </div>
+
+    <div class="header-actions">
+
+      <button
+        type="button"
+        class="secondary-btn"
+        (click)="toggleBalances()">
+        📊 Leave Balances
+      </button>
+
+      <a
+        routerLink="/apply-leave"
+        class="primary-btn">
+        + Apply Leave
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       SUMMARY CARDS
+  ========================== -->
+  <div class="summary-grid">
+
+    <!-- Total -->
+    <div class="summary-card">
+      <div class="summary-icon total-icon">
+        📋
+      </div>
+
+      <div class="summary-content">
+        <span class="summary-label">Total Requests</span>
+        <strong>{{ totalRequests }}</strong>
+      </div>
+    </div>
+
+
+    <!-- Pending -->
+    <div class="summary-card">
+      <div class="summary-icon pending-icon">
+        ⏳
+      </div>
+
+      <div class="summary-content">
+        <span class="summary-label">Pending</span>
+        <strong>{{ pendingCount }}</strong>
+      </div>
+    </div>
+
+
+    <!-- Approved -->
+    <div class="summary-card">
+      <div class="summary-icon approved-icon">
+        ✓
+      </div>
+
+      <div class="summary-content">
+        <span class="summary-label">Approved</span>
+        <strong>{{ approvedCount }}</strong>
+      </div>
+    </div>
+
+
+    <!-- Rejected -->
+    <div class="summary-card">
+      <div class="summary-icon rejected-icon">
+        ×
+      </div>
+
+      <div class="summary-content">
+        <span class="summary-label">Rejected</span>
+        <strong>{{ rejectedCount }}</strong>
+      </div>
+    </div>
+
+
+    <!-- Approved Days -->
+    <div class="summary-card">
+      <div class="summary-icon days-icon">
+        📅
+      </div>
+
+      <div class="summary-content">
+        <span class="summary-label">Approved Days</span>
+        <strong>{{ totalLeaveDays }}</strong>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       LEAVE BALANCES
+  ========================== -->
+  <div
+    class="balances-card"
+    *ngIf="showBalances">
+
+    <div class="section-header">
+
+      <div>
+        <h2>Leave Balances</h2>
+        <p>Current leave balance for employees</p>
+      </div>
+
+      <button
+        type="button"
+        class="close-balance-btn"
+        (click)="toggleBalances()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="balance-grid">
+
+      <div
+        class="balance-card"
+        *ngFor="let balance of leaveBalances">
+
+        <div class="balance-top">
+
+          <div class="employee-avatar">
+            {{ balance.employeeName.charAt(0).toUpperCase() }}
+          </div>
+
+          <div class="employee-info">
+            <h3>{{ balance.employeeName }}</h3>
+            <span>{{ balance.employeeId }}</span>
+          </div>
+
+        </div>
+
+
+        <div class="balance-numbers">
+
+          <div>
+            <span>Allocated</span>
+            <strong>{{ balance.totalAllocated }}</strong>
+          </div>
+
+          <div>
+            <span>Used</span>
+            <strong>{{ balance.totalUsed }}</strong>
+          </div>
+
+          <div>
+            <span>Remaining</span>
+            <strong>{{ balance.totalRemaining }}</strong>
+          </div>
+
+        </div>
+
+
+        <div class="progress-section">
+
+          <div class="progress-header">
+            <span>Remaining</span>
+            <strong>{{ getBalancePercentage(balance) }}%</strong>
+          </div>
+
+          <div class="progress-bar">
+            <div
+              class="progress-fill"
+              [style.width.%]="getBalancePercentage(balance)">
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       FILTER CARD
+  ========================== -->
+  <div class="filter-card">
+
+    <div class="filter-header">
+
+      <div>
+        <h2>Search & Filter</h2>
+        <p>Find leave requests quickly</p>
+      </div>
+
+    </div>
+
+
+    <div class="filter-grid">
+
+      <!-- Search -->
+      <div class="filter-group search-group">
+
+        <label for="searchText">
+          Search
+        </label>
+
+        <div class="input-wrapper">
+
+          <span class="input-icon">
+            🔍
+          </span>
+
+          <input
+            id="searchText"
+            type="text"
+            [(ngModel)]="searchText"
+            placeholder="Search employee, ID or department">
+
+        </div>
+
+      </div>
+
+
+      <!-- Status -->
+      <div class="filter-group">
+
+        <label for="statusFilter">
+          Status
+        </label>
+
+        <select
+          id="statusFilter"
+          [(ngModel)]="statusFilter">
+
+          <option value="All Status">
+            All Status
+          </option>
+
+          <option value="Pending">
+            Pending
+          </option>
+
+          <option value="Approved">
+            Approved
+          </option>
+
+          <option value="Rejected">
+            Rejected
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- Leave Type -->
+      <div class="filter-group">
+
+        <label for="leaveTypeFilter">
+          Leave Type
+        </label>
+
+        <select
+          id="leaveTypeFilter"
+          [(ngModel)]="leaveTypeFilter">
+
+          <option value="All Types">
+            All Types
+          </option>
+
+          <option value="Casual Leave">
+            Casual Leave
+          </option>
+
+          <option value="Sick Leave">
+            Sick Leave
+          </option>
+
+          <option value="Earned Leave">
+            Earned Leave
+          </option>
+
+          <option value="Emergency Leave">
+            Emergency Leave
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       LEAVE REQUESTS CARD
+  ========================== -->
+  <div class="requests-card">
+
+    <!-- Card Header -->
+    <div class="requests-header">
+
+      <div>
+        <h2>Leave Requests</h2>
+        <p>Review and manage employee leave applications.</p>
+      </div>
+
+      <div class="request-count">
+        {{ filteredLeaves.length }}
+        {{ filteredLeaves.length === 1 ? 'request' : 'requests' }}
+      </div>
+
+    </div>
+
+
+    <!-- =========================
+         TABLE
+    ========================== -->
+    <div
+      class="table-container"
+      *ngIf="filteredLeaves.length > 0">
+
+      <table class="leave-table">
+
+        <thead>
+
+          <tr>
+            <th>Employee</th>
+            <th>Leave Type</th>
+            <th>Dates</th>
+            <th>Days</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th class="actions-column">Actions</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let leave of filteredLeaves">
+
+            <!-- Employee -->
+            <td>
+
+              <div class="employee-cell">
+
+                <div class="employee-avatar">
+                  {{ leave.employeeName.charAt(0).toUpperCase() }}
+                </div>
+
+                <div class="employee-details">
+
+                  <strong>
+                    {{ leave.employeeName }}
+                  </strong>
+
+                  <span>
+                    {{ leave.employeeId }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- Leave Type -->
+            <td>
+
+              <span class="leave-type">
+                {{ leave.leaveType }}
+              </span>
+
+            </td>
+
+
+            <!-- Dates -->
+            <td>
+
+              <div class="date-cell">
+
+                <span>
+                  {{ formatDate(leave.startDate) }}
+                </span>
+
+                <span class="date-arrow">
+                  →
+                </span>
+
+                <span>
+                  {{ formatDate(leave.endDate) }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <!-- Days -->
+            <td>
+
+              <span class="days-value">
+                {{ leave.days }}
+              </span>
+
+            </td>
+
+
+            <!-- Reason -->
+            <td>
+
+              <span class="reason-text">
+                {{ leave.reason || '—' }}
+              </span>
+
+            </td>
+
+
+            <!-- Status -->
+            <td>
+
+              <span
+                class="status-badge"
+                [class.pending]="leave.status === 'Pending'"
+                [class.approved]="leave.status === 'Approved'"
+                [class.rejected]="leave.status === 'Rejected'">
+
+                <span
+                  class="status-dot">
+                </span>
+
+                {{ leave.status }}
+
+              </span>
+
+            </td>
+
+
+            <!-- Actions -->
+            <td>
+
+              <div class="action-buttons">
+
+                <a
+                  class="action-link view-link"
+                  [routerLink]="['/leave-details', leave.id]">
+                  View
+                </a>
+
+
+                <a
+                  class="action-link edit-link"
+                  [routerLink]="['/apply-leave']">
+                  Edit
+                </a>
+
+
+                <button
+                  *ngIf="leave.status === 'Pending'"
+                  type="button"
+                  class="action-btn approve-btn"
+                  (click)="approveLeave(leave.id)">
+                  Approve
+                </button>
+
+
+                <button
+                  *ngIf="leave.status === 'Pending'"
+                  type="button"
+                  class="action-btn reject-btn"
+                  (click)="rejectLeave(leave.id)">
+                  Reject
+                </button>
+
+
+                <button
+                  type="button"
+                  class="action-btn delete-btn"
+                  (click)="deleteLeave(leave.id)">
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- =========================
+         EMPTY STATE
+    ========================== -->
+    <div
+      class="empty-state"
+      *ngIf="filteredLeaves.length === 0">
+
+      <div class="empty-icon">
+        📋
+      </div>
+
+      <h3>
+        No leave requests found
+      </h3>
+
+      <p>
+        Try changing your search or filter options.
+      </p>
+
+      <a
+        routerLink="/apply-leave"
+        class="primary-btn">
+        + Apply Leave
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

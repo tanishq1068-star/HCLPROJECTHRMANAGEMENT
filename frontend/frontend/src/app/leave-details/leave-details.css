@@ -1,0 +1,129 @@
+.calculated-value {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 0 13px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #f9fafb;
+  color: #111827;
+  font-weight: 600;
+}
+
+.balance-warning {
+  color: #dc2626;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.leave-balance-panel {
+  margin: 24px 0;
+  padding: 20px;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  background: #f8fbff;
+}
+
+.balance-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.balance-panel-header h3 {
+  margin: 0 0 5px;
+  color: #111827;
+  font-size: 17px;
+}
+
+.balance-panel-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.remaining-days {
+  text-align: right;
+}
+
+.remaining-days strong {
+  display: block;
+  color: #2563eb;
+  font-size: 26px;
+}
+
+.remaining-days span {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.balance-type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.balance-type-card {
+  padding: 15px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.balance-type-card span {
+  display: block;
+  margin-bottom: 5px;
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.balance-type-card strong {
+  display: block;
+  color: #111827;
+  font-size: 22px;
+}
+
+.balance-type-card small {
+  color: #9ca3af;
+  font-size: 11px;
+}
+
+.validation-message {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 20px 0;
+  padding: 14px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #991b1b;
+  font-size: 13px;
+}
+
+.validation-message strong {
+  color: #b91c1c;
+}
+
+.form-actions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+
+  .balance-panel-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .remaining-days {
+    text-align: left;
+  }
+
+  .balance-type-grid {
+    grid-template-columns: 1fr;
+  }
+}

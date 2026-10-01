@@ -1,0 +1,444 @@
+/* =========================================================
+   EMPLOYEE DETAILS PAGE
+   ========================================================= */
+
+.employee-details-page {
+  min-height: calc(100vh - 90px);
+  padding: 48px 5%;
+  background: #f4f7fb;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.page-header {
+  max-width: 1200px;
+  margin: 0 auto 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.page-header h1 {
+  margin: 0;
+
+  color: #172033;
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.page-header p {
+  margin: 8px 0 0;
+
+  color: #7b879d;
+  font-size: 17px;
+}
+
+
+/* =========================================================
+   BACK BUTTON
+   ========================================================= */
+
+.back-button {
+  border: none;
+  border-radius: 10px;
+
+  padding: 13px 22px;
+
+  background: #ffffff;
+  color: #172033;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 14px rgba(30, 45, 70, 0.08);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.back-button:hover {
+  background: #eef3f9;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 7px 18px rgba(30, 45, 70, 0.12);
+}
+
+
+/* =========================================================
+   DETAILS CARD
+   ========================================================= */
+
+.details-card {
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 42px;
+
+  background: #ffffff;
+
+  border-radius: 20px;
+
+  box-shadow:
+    0 10px 35px rgba(30, 45, 70, 0.08);
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   EMPLOYEE HEADER
+   ========================================================= */
+
+.employee-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 30px;
+
+  border-bottom: 1px solid #e7ebf1;
+}
+
+.employee-header h2 {
+  margin: 0 0 16px;
+
+  color: #172033;
+
+  font-size: 32px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 8px 18px;
+
+  border-radius: 30px;
+
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.status.active {
+  background: #e5f8ee;
+  color: #16834b;
+}
+
+.status.inactive {
+  background: #fee9e9;
+  color: #d33a3a;
+}
+
+
+/* =========================================================
+   DETAILS GRID
+   ========================================================= */
+
+.details-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  column-gap: 80px;
+  row-gap: 0;
+
+  margin-top: 8px;
+}
+
+
+/* =========================================================
+   DETAIL ITEM
+   ========================================================= */
+
+.detail-item {
+  padding: 25px 0;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+.detail-item label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #8994a8;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  color: #293448;
+
+  font-size: 18px;
+  font-weight: 500;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   SALARY
+   ========================================================= */
+
+.detail-item:last-child .detail-value {
+  color: #1769aa;
+
+  font-size: 21px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.action-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 35px;
+
+  padding-top: 28px;
+
+  border-top: 1px solid #e7ebf1;
+}
+
+.action-buttons button {
+  border: none;
+
+  padding: 13px 22px;
+
+  border-radius: 9px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.action-buttons button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 15px rgba(30, 45, 70, 0.12);
+}
+
+
+/* =========================================================
+   EDIT BUTTON
+   ========================================================= */
+
+.edit-button {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.edit-button:hover {
+  background: #1d4ed8;
+}
+
+
+/* =========================================================
+   DELETE BUTTON
+   ========================================================= */
+
+.delete-button {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.delete-button:hover {
+  background: #fecaca;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-card {
+  min-height: 180px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.loading-content p {
+  margin: 0;
+
+  color: #6b778c;
+
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.error-card {
+  text-align: center;
+
+  padding: 55px 40px;
+}
+
+.error-card h2 {
+  margin: 0 0 12px;
+
+  color: #dc2626;
+
+  font-size: 24px;
+}
+
+.error-card p {
+  margin: 0 0 25px;
+
+  color: #6b7280;
+
+  font-size: 16px;
+}
+
+.error-card button {
+  border: none;
+
+  padding: 12px 22px;
+
+  border-radius: 9px;
+
+  background: #2563eb;
+  color: #ffffff;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .employee-details-page {
+    padding: 35px 25px;
+  }
+
+  .details-card {
+    padding: 30px;
+  }
+
+  .details-grid {
+    column-gap: 35px;
+  }
+
+  .page-header h1 {
+    font-size: 34px;
+  }
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .employee-details-page {
+    padding: 25px 15px;
+  }
+
+  .page-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    margin-bottom: 25px;
+  }
+
+  .page-header h1 {
+    font-size: 30px;
+  }
+
+  .page-header p {
+    font-size: 15px;
+  }
+
+  .back-button {
+    width: 100%;
+
+    text-align: center;
+  }
+
+  .details-card {
+    padding: 25px 20px;
+
+    border-radius: 15px;
+  }
+
+  .employee-header h2 {
+    font-size: 26px;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+
+    column-gap: 0;
+  }
+
+  .detail-item {
+    padding: 20px 0;
+  }
+
+  .detail-value {
+    font-size: 16px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .action-buttons button {
+    width: 100%;
+  }
+}

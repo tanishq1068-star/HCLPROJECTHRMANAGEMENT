@@ -1,0 +1,303 @@
+<div class="recruitment-page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Recruitment</h1>
+      <p>Manage job openings and recruitment activities</p>
+    </div>
+
+    <a
+      routerLink="/add-job-opening"
+      class="add-btn">
+      + Add Job Opening
+    </a>
+
+  </div>
+
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-icon open-icon">
+        💼
+      </div>
+
+      <div class="stat-content">
+        <span>Open Positions</span>
+        <strong>{{ openPositions }}</strong>
+        <small>Active job openings</small>
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon applicant-icon">
+        👥
+      </div>
+
+      <div class="stat-content">
+        <span>Total Applicants</span>
+        <strong>{{ totalApplicants }}</strong>
+        <small>Across all job openings</small>
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon interview-icon">
+        🎯
+      </div>
+
+      <div class="stat-content">
+        <span>Interviews</span>
+        <strong>{{ interviews }}</strong>
+        <small>Estimated interviews</small>
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon hired-icon">
+        ✓
+      </div>
+
+      <div class="stat-content">
+        <span>Hired</span>
+        <strong>{{ hired }}</strong>
+        <small>Estimated hires</small>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="filter-card">
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        🔍
+      </span>
+
+      <input
+        type="text"
+        placeholder="Search job openings..."
+        [(ngModel)]="searchText">
+
+    </div>
+
+
+    <div class="status-filter">
+
+      <select
+        [(ngModel)]="statusFilter">
+
+        <option value="All Status">
+          All Status
+        </option>
+
+        <option value="Open">
+          Open
+        </option>
+
+        <option value="Closed">
+          Closed
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <div class="table-card">
+
+    <div class="table-header">
+
+      <div>
+        <h2>Job Openings</h2>
+        <p>Manage your organization's recruitment positions</p>
+      </div>
+
+      <span>
+        {{ filteredJobs.length }} Jobs
+      </span>
+
+    </div>
+
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Job ID</th>
+            <th>Position</th>
+            <th>Department</th>
+            <th>Type</th>
+            <th>Location</th>
+            <th>Vacancies</th>
+            <th>Applicants</th>
+            <th>Deadline</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr *ngFor="let job of filteredJobs">
+
+            <td>
+              <strong>
+                {{ job.id }}
+              </strong>
+            </td>
+
+
+            <td>
+
+              <div class="job-title">
+
+                <strong>
+                  {{ job.title }}
+                </strong>
+
+                <span>
+                  {{ job.experience }}
+                </span>
+
+              </div>
+
+            </td>
+
+
+            <td>
+              {{ job.department }}
+            </td>
+
+
+            <td>
+              {{ job.employmentType }}
+            </td>
+
+
+            <td>
+              {{ job.location }}
+            </td>
+
+
+            <td>
+              {{ job.vacancies }}
+            </td>
+
+
+            <td>
+
+              <span class="applicant-count">
+                {{ job.applicants }}
+              </span>
+
+            </td>
+
+
+            <td>
+              {{ job.deadline }}
+            </td>
+
+
+            <td>
+
+              <span
+                class="status"
+                [class.closed]="job.status === 'Closed'">
+
+                {{ job.status }}
+
+              </span>
+
+            </td>
+
+
+            <td>
+
+              <div class="actions">
+
+                <a
+                  [routerLink]="['/job-details', job.id]"
+                  class="view-btn">
+                  View
+                </a>
+
+
+                <button
+                  type="button"
+                  class="edit-btn"
+                  (click)="editJob(job)">
+                  Edit
+                </button>
+
+
+                <button
+                  type="button"
+                  class="delete-btn"
+                  (click)="deleteJob(job)">
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+
+          <tr *ngIf="filteredJobs.length === 0">
+
+            <td
+              colspan="10"
+              class="no-results">
+
+              <div class="no-results-content">
+
+                <div class="no-results-icon">
+                  🔍
+                </div>
+
+                <h3>
+                  No job openings found
+                </h3>
+
+                <p>
+                  No job matches "{{ searchText }}"
+                </p>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,198 @@
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+
+    <div>
+      <h1>Add Performance Review</h1>
+      <p>Create a performance review for an employee</p>
+    </div>
+
+    <button
+      class="back-btn"
+      (click)="cancel()">
+      ← Back to Performance
+    </button>
+
+  </div>
+
+
+  <!-- Form Card -->
+  <div class="form-card">
+
+    <h2>Performance Review Information</h2>
+
+    <form>
+
+      <div class="form-grid">
+
+        <!-- Employee -->
+        <div class="form-group">
+
+          <label>Employee</label>
+
+          <select>
+
+            <option value="">Select Employee</option>
+
+            <option>
+              EMP001 - Aditya Sharma
+            </option>
+
+            <option>
+              EMP002 - Rahul Kumar
+            </option>
+
+            <option>
+              EMP003 - Priya Singh
+            </option>
+
+            <option>
+              EMP004 - Ananya Mehta
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Review Period -->
+        <div class="form-group">
+
+          <label>Review Period</label>
+
+          <select>
+
+            <option value="">Select Review Period</option>
+            <option>Q1 2026</option>
+            <option>Q2 2026</option>
+            <option>Q3 2026</option>
+            <option>Q4 2026</option>
+            <option>Annual 2026</option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Review Date -->
+        <div class="form-group">
+
+          <label>Review Date</label>
+
+          <input type="date">
+
+        </div>
+
+
+        <!-- Overall Rating -->
+        <div class="form-group">
+
+          <label>Overall Rating</label>
+
+          <select>
+
+            <option value="">Select Rating</option>
+            <option>5 - Excellent</option>
+            <option>4 - Very Good</option>
+            <option>3 - Good</option>
+            <option>2 - Needs Improvement</option>
+            <option>1 - Unsatisfactory</option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Reviewer -->
+        <div class="form-group">
+
+          <label>Reviewer</label>
+
+          <input
+            type="text"
+            placeholder="Enter reviewer name">
+
+        </div>
+
+
+        <!-- Goal Achievement -->
+        <div class="form-group">
+
+          <label>Goal Achievement</label>
+
+          <select>
+
+            <option value="">Select</option>
+            <option>Excellent</option>
+            <option>Very Good</option>
+            <option>Good</option>
+            <option>Needs Improvement</option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+      <!-- Strengths -->
+      <div class="form-group full-width">
+
+        <label>Strengths</label>
+
+        <textarea
+          rows="4"
+          placeholder="Enter employee strengths..."></textarea>
+
+      </div>
+
+
+      <!-- Areas for Improvement -->
+      <div class="form-group full-width">
+
+        <label>Areas for Improvement</label>
+
+        <textarea
+          rows="4"
+          placeholder="Enter areas for improvement..."></textarea>
+
+      </div>
+
+
+      <!-- Comments -->
+      <div class="form-group full-width">
+
+        <label>Comments</label>
+
+        <textarea
+          rows="4"
+          placeholder="Enter additional comments..."></textarea>
+
+      </div>
+
+
+      <!-- Buttons -->
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="cancel()">
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="save-btn"
+          (click)="saveReview()">
+          Save Performance Review
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

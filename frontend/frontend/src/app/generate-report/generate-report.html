@@ -1,0 +1,155 @@
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+
+    <div>
+      <h1>Generate Report</h1>
+      <p>Create and generate HR reports</p>
+    </div>
+
+    <button
+      class="back-btn"
+      (click)="cancel()">
+      ← Back to Reports
+    </button>
+
+  </div>
+
+
+  <!-- Form Card -->
+  <div class="form-card">
+
+    <h2>Report Information</h2>
+
+    <form>
+
+      <div class="form-grid">
+
+        <!-- Report Type -->
+        <div class="form-group">
+
+          <label>Report Type</label>
+
+          <select>
+
+            <option value="">Select Report Type</option>
+            <option>Employee Report</option>
+            <option>Attendance Report</option>
+            <option>Leave Report</option>
+            <option>Payroll Report</option>
+            <option>Recruitment Report</option>
+            <option>Performance Report</option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Department -->
+        <div class="form-group">
+
+          <label>Department</label>
+
+          <select>
+
+            <option value="">All Departments</option>
+            <option>IT</option>
+            <option>HR</option>
+            <option>Finance</option>
+            <option>Marketing</option>
+            <option>Sales</option>
+            <option>Data Science</option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Start Date -->
+        <div class="form-group">
+
+          <label>Start Date</label>
+
+          <input type="date">
+
+        </div>
+
+
+        <!-- End Date -->
+        <div class="form-group">
+
+          <label>End Date</label>
+
+          <input type="date">
+
+        </div>
+
+
+        <!-- Format -->
+        <div class="form-group">
+
+          <label>Report Format</label>
+
+          <select>
+
+            <option value="">Select Format</option>
+            <option>PDF</option>
+            <option>Excel</option>
+            <option>CSV</option>
+
+          </select>
+
+        </div>
+
+
+        <!-- Report Name -->
+        <div class="form-group">
+
+          <label>Report Name</label>
+
+          <input
+            type="text"
+            placeholder="Enter report name">
+
+        </div>
+
+      </div>
+
+
+      <!-- Description -->
+      <div class="form-group full-width">
+
+        <label>Description</label>
+
+        <textarea
+          rows="4"
+          placeholder="Enter report description..."></textarea>
+
+      </div>
+
+
+      <!-- Buttons -->
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="cancel()">
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="generate-btn"
+          (click)="generateReport()">
+          Generate Report
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

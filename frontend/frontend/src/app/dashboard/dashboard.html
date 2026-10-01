@@ -1,0 +1,755 @@
+<div class="dashboard-page">
+
+  <!-- =====================================================
+       DASHBOARD HEADER
+       ===================================================== -->
+
+  <div class="dashboard-header">
+
+    <div class="dashboard-title">
+      <h1>Dashboard</h1>
+      <p>Welcome back! Here's what's happening in your organization.</p>
+    </div>
+
+    <div class="dashboard-actions">
+
+      <a
+        routerLink="/add-employee"
+        class="btn btn-primary">
+        + Add Employee
+      </a>
+
+      <a
+        routerLink="/add-job-opening"
+        class="btn btn-secondary">
+        + Post Job
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       MAIN STATISTICS
+       ===================================================== -->
+
+  <div class="stats-grid">
+
+    <!-- Total Employees -->
+
+    <a
+      routerLink="/employees"
+      class="stat-card clickable-card">
+
+      <div class="stat-icon employees-icon">
+        👥
+      </div>
+
+      <div class="stat-content">
+
+        <span>Total Employees</span>
+
+        <strong>
+          {{ totalEmployees }}
+        </strong>
+
+        <small>
+          {{ activeEmployees }} active
+          ·
+          {{ inactiveEmployees }} inactive
+        </small>
+
+      </div>
+
+    </a>
+
+
+    <!-- Open Positions -->
+
+    <a
+      routerLink="/recruitment"
+      class="stat-card clickable-card">
+
+      <div class="stat-icon recruitment-icon">
+        💼
+      </div>
+
+      <div class="stat-content">
+
+        <span>Open Positions</span>
+
+        <strong>
+          {{ openJobs }}
+        </strong>
+
+        <small>
+          {{ totalApplicants }} total applicants
+        </small>
+
+      </div>
+
+    </a>
+
+
+    <!-- Attendance -->
+
+    <a
+      routerLink="/attendance"
+      class="stat-card clickable-card">
+
+      <div class="stat-icon attendance-icon">
+        ✓
+      </div>
+
+      <div class="stat-content">
+
+        <span>Attendance Today</span>
+
+        <strong>
+          {{ attendancePercentage }}%
+        </strong>
+
+        <small>
+          {{ presentToday }} present
+          ·
+          {{ lateToday }} late
+          ·
+          {{ absentToday }} absent
+        </small>
+
+      </div>
+
+    </a>
+
+
+    <!-- Pending Leaves -->
+
+    <a
+      routerLink="/leave-management"
+      class="stat-card clickable-card">
+
+      <div class="stat-icon leave-icon">
+        📅
+      </div>
+
+      <div class="stat-content">
+
+        <span>Pending Leaves</span>
+
+        <strong>
+          {{ pendingLeaves }}
+        </strong>
+
+        <small>
+          {{ approvedLeaves }} approved
+        </small>
+
+      </div>
+
+    </a>
+
+  </div>
+
+
+  <!-- =====================================================
+       SECONDARY STATISTICS
+       ===================================================== -->
+
+  <div class="stats-grid secondary-stats">
+
+    <!-- Payroll -->
+
+    <a
+      routerLink="/payroll"
+      class="stat-card compact-card clickable-card">
+
+      <div class="stat-icon payroll-icon">
+        ₹
+      </div>
+
+      <div class="stat-content">
+
+        <span>Total Payroll</span>
+
+        <strong>
+          {{ formatCurrency(totalPayroll) }}
+        </strong>
+
+        <small>
+          {{ pendingPayroll }} pending payment
+        </small>
+
+      </div>
+
+    </a>
+
+
+    <!-- Performance -->
+
+    <a
+      routerLink="/performance"
+      class="stat-card compact-card clickable-card">
+
+      <div class="stat-icon performance-icon">
+        ★
+      </div>
+
+      <div class="stat-content">
+
+        <span>Average Performance</span>
+
+        <strong>
+          {{ averagePerformance }}/5
+        </strong>
+
+        <small>
+          {{ completedReviews }} completed reviews
+        </small>
+
+      </div>
+
+    </a>
+
+
+    <!-- Active Workforce -->
+
+    <a
+      routerLink="/employees"
+      class="stat-card compact-card clickable-card">
+
+      <div class="stat-icon active-icon">
+        👤
+      </div>
+
+      <div class="stat-content">
+
+        <span>Active Workforce</span>
+
+        <strong>
+          {{ activeEmployees }}
+        </strong>
+
+        <small>
+          of {{ totalEmployees }} employees
+        </small>
+
+      </div>
+
+    </a>
+
+
+    <!-- Attendance Rate -->
+
+    <a
+      routerLink="/attendance"
+      class="stat-card compact-card clickable-card">
+
+      <div class="stat-icon attendance-icon">
+        %
+      </div>
+
+      <div class="stat-content">
+
+        <span>Attendance Rate</span>
+
+        <strong>
+          {{ attendancePercentage }}%
+        </strong>
+
+        <small>
+          {{ todayAttendanceDate }}
+        </small>
+
+      </div>
+
+    </a>
+
+  </div>
+
+
+  <!-- =====================================================
+       LEAVE REQUESTS + EMPLOYEES
+       ===================================================== -->
+
+  <div class="dashboard-columns">
+
+    <!-- ===================================================
+         RECENT LEAVE REQUESTS
+         =================================================== -->
+
+    <div class="dashboard-card">
+
+      <div class="card-header">
+
+        <div>
+          <h2>Recent Leave Requests</h2>
+          <p>Latest employee leave applications</p>
+        </div>
+
+        <a
+          routerLink="/leave-management"
+          class="view-all-link">
+          View All
+        </a>
+
+      </div>
+
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
+
+            <tr>
+              <th>Employee</th>
+              <th>Leave Type</th>
+              <th>Days</th>
+              <th>Status</th>
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            <tr
+              *ngFor="let leave of leaveRequests">
+
+              <td>
+
+                <div class="employee-cell">
+
+                  <div class="mini-avatar">
+                    {{ leave.employeeName?.charAt(0) || '?' }}
+                  </div>
+
+                  <div>
+
+                    <strong>
+                      {{ leave.employeeName }}
+                    </strong>
+
+                    <small>
+                      {{ leave.employeeId }}
+                    </small>
+
+                  </div>
+
+                </div>
+
+              </td>
+
+
+              <td>
+                {{ leave.leaveType }}
+              </td>
+
+
+              <td>
+                {{ leave.days }}
+              </td>
+
+
+              <td>
+
+                <span
+                  class="status-badge"
+                  [class.status-pending]="leave.status === 'Pending'"
+                  [class.status-active]="leave.status === 'Approved'"
+                  [class.status-inactive]="leave.status === 'Rejected'">
+
+                  {{ leave.status }}
+
+                </span>
+
+              </td>
+
+            </tr>
+
+
+            <tr
+              *ngIf="leaveRequests.length === 0">
+
+              <td
+                colspan="4"
+                class="empty-cell">
+
+                No leave requests found.
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         EMPLOYEES
+         =================================================== -->
+
+    <div class="dashboard-card">
+
+      <div class="card-header">
+
+        <div>
+          <h2>Employees</h2>
+          <p>Current workforce overview</p>
+        </div>
+
+        <a
+          routerLink="/employees"
+          class="view-all-link">
+          View All
+        </a>
+
+      </div>
+
+
+      <div class="employee-list">
+
+        <div
+          class="employee-list-item"
+          *ngFor="let employee of recentEmployees">
+
+          <div class="employee-cell">
+
+            <div class="mini-avatar">
+              {{ employee.name?.charAt(0) || '?' }}
+            </div>
+
+            <div>
+
+              <strong>
+                {{ employee.name }}
+              </strong>
+
+              <small>
+                {{ employee.position }}
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <span
+            class="status-badge"
+            [class.status-active]="employee.status === 'Active'"
+            [class.status-inactive]="employee.status === 'Inactive'">
+
+            {{ employee.status }}
+
+          </span>
+
+        </div>
+
+
+        <div
+          class="empty-state"
+          *ngIf="recentEmployees.length === 0">
+
+          No employees found.
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       RECRUITMENT + PERFORMANCE
+       ===================================================== -->
+
+  <div class="dashboard-columns">
+
+    <!-- ===================================================
+         OPEN POSITIONS
+         =================================================== -->
+
+    <div class="dashboard-card">
+
+      <div class="card-header">
+
+        <div>
+          <h2>Open Positions</h2>
+          <p>Latest recruitment activity</p>
+        </div>
+
+        <a
+          routerLink="/recruitment"
+          class="view-all-link">
+          View All
+        </a>
+
+      </div>
+
+
+      <div class="job-list">
+
+        <div
+          class="job-item"
+          *ngFor="let job of recentJobs">
+
+          <div class="job-main">
+
+            <div class="job-icon">
+              💼
+            </div>
+
+            <div>
+
+              <strong>
+                {{ job.title }}
+              </strong>
+
+              <small>
+                {{ job.department }}
+                ·
+                {{ job.location }}
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div class="job-meta">
+
+            <strong>
+              {{ job.applicants }}
+            </strong>
+
+            <span>
+              applicants
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="empty-state"
+          *ngIf="recentJobs.length === 0">
+
+          No job openings found.
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================================
+         PERFORMANCE
+         =================================================== -->
+
+    <div class="dashboard-card">
+
+      <div class="card-header">
+
+        <div>
+          <h2>Performance Reviews</h2>
+          <p>Latest employee performance</p>
+        </div>
+
+        <a
+          routerLink="/performance"
+          class="view-all-link">
+          View All
+        </a>
+
+      </div>
+
+
+      <div class="performance-list">
+
+        <div
+          class="performance-item"
+          *ngFor="let record of performanceRecords">
+
+          <div class="employee-cell">
+
+            <div class="mini-avatar">
+              {{ record.employeeName?.charAt(0) || '?' }}
+            </div>
+
+            <div>
+
+              <strong>
+                {{ record.employeeName }}
+              </strong>
+
+              <small>
+                {{ record.reviewPeriod }}
+              </small>
+
+            </div>
+
+          </div>
+
+
+          <div class="rating">
+
+            <span>
+              ★
+            </span>
+
+            <strong>
+              {{ record.rating }}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="empty-state"
+          *ngIf="performanceRecords.length === 0">
+
+          No performance records found.
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       QUICK ACTIONS
+       ===================================================== -->
+
+  <div class="dashboard-card quick-actions-card">
+
+    <div class="card-header">
+
+      <div>
+        <h2>Quick Actions</h2>
+        <p>Frequently used HR operations</p>
+      </div>
+
+    </div>
+
+
+    <div class="quick-actions">
+
+      <!-- Mark Attendance -->
+
+      <a
+        routerLink="/mark-attendance"
+        class="quick-action">
+
+        <span class="quick-action-icon">
+          ✓
+        </span>
+
+        <div>
+
+          <strong>
+            Mark Attendance
+          </strong>
+
+          <small>
+            Record employee attendance
+          </small>
+
+        </div>
+
+      </a>
+
+
+      <!-- Apply Leave -->
+
+      <a
+        routerLink="/apply-leave"
+        class="quick-action">
+
+        <span class="quick-action-icon">
+          📅
+        </span>
+
+        <div>
+
+          <strong>
+            Apply Leave
+          </strong>
+
+          <small>
+            Create a leave request
+          </small>
+
+        </div>
+
+      </a>
+
+
+      <!-- Process Payroll -->
+
+      <a
+        routerLink="/process-payroll"
+        class="quick-action">
+
+        <span class="quick-action-icon">
+          ₹
+        </span>
+
+        <div>
+
+          <strong>
+            Process Payroll
+          </strong>
+
+          <small>
+            Manage employee payroll
+          </small>
+
+        </div>
+
+      </a>
+
+
+      <!-- Add Performance Review -->
+
+      <a
+        routerLink="/add-performance-review"
+        class="quick-action">
+
+        <span class="quick-action-icon">
+          ★
+        </span>
+
+        <div>
+
+          <strong>
+            Add Performance Review
+          </strong>
+
+          <small>
+            Create employee review
+          </small>
+
+        </div>
+
+      </a>
+
+    </div>
+
+  </div>
+
+</div>

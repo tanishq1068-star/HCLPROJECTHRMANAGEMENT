@@ -1,0 +1,352 @@
+<div class="page-container">
+
+  <div class="page-header">
+
+    <div>
+      <h1>
+        {{ isEditMode ? 'Edit Payroll' : 'Add Payroll' }}
+      </h1>
+
+      <p>
+        {{
+          isEditMode
+            ? 'Update the employee payroll information.'
+            : 'Create a new employee payroll record.'
+        }}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="cancel()"
+    >
+      ← Back to Payroll
+    </button>
+
+  </div>
+
+  <div class="card form-card">
+
+    <div class="section-title">
+      <h2>Employee Information</h2>
+      <p>
+        Select the employee and payroll month.
+      </p>
+    </div>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label for="employee">
+          Employee <span class="required">*</span>
+        </label>
+
+        <select
+          id="employee"
+          [(ngModel)]="selectedEmployeeId"
+          (change)="onEmployeeChange()"
+        >
+
+          <option value="">
+            Select employee
+          </option>
+
+          <option
+            *ngFor="let employee of employees"
+            [value]="employee.id"
+          >
+            {{ employee.name }} — {{ employee.id }}
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="month">
+          Payroll Month <span class="required">*</span>
+        </label>
+
+        <select
+          id="month"
+          [(ngModel)]="month"
+        >
+
+          <option value="">
+            Select month
+          </option>
+
+          <option
+            *ngFor="let payrollMonth of months"
+            [value]="payrollMonth"
+          >
+            {{ payrollMonth }}
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <div
+      class="employee-info"
+      *ngIf="selectedEmployee"
+    >
+
+      <div class="employee-avatar">
+        {{ selectedEmployee.name.charAt(0) }}
+      </div>
+
+      <div>
+
+        <strong>
+          {{ selectedEmployee.name }}
+        </strong>
+
+        <span>
+          {{ selectedEmployee.id }}
+          •
+          {{ selectedEmployee.department }}
+          •
+          {{ selectedEmployee.position }}
+        </span>
+
+      </div>
+
+    </div>
+
+    <div class="section-title salary-section">
+
+      <h2>Salary Details</h2>
+
+      <p>
+        Enter salary components. Gross and net salary are calculated automatically.
+      </p>
+
+    </div>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label for="basicSalary">
+          Basic Salary <span class="required">*</span>
+        </label>
+
+        <div class="input-with-prefix">
+          <span>₹</span>
+
+          <input
+            id="basicSalary"
+            type="number"
+            min="0"
+            [(ngModel)]="basicSalary"
+            (input)="calculateSalary()"
+            placeholder="Enter basic salary"
+          />
+
+        </div>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="allowances">
+          Allowances
+        </label>
+
+        <div class="input-with-prefix">
+          <span>₹</span>
+
+          <input
+            id="allowances"
+            type="number"
+            min="0"
+            [(ngModel)]="allowances"
+            (input)="calculateSalary()"
+            placeholder="Enter allowances"
+          />
+
+        </div>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="deductions">
+          Deductions
+        </label>
+
+        <div class="input-with-prefix">
+          <span>₹</span>
+
+          <input
+            id="deductions"
+            type="number"
+            min="0"
+            [(ngModel)]="deductions"
+            (input)="calculateSalary()"
+            placeholder="Enter deductions"
+          />
+
+        </div>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Gross Salary
+        </label>
+
+        <div class="calculated-value">
+          ₹{{ grossSalary | number:'1.0-0' }}
+        </div>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Net Salary
+        </label>
+
+        <div class="calculated-value net-value">
+          ₹{{ netSalary | number:'1.0-0' }}
+        </div>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="status">
+          Payroll Status
+        </label>
+
+        <select
+          id="status"
+          [(ngModel)]="status"
+        >
+
+          <option value="Pending">
+            Pending
+          </option>
+
+          <option value="Processed">
+            Processed
+          </option>
+
+        </select>
+
+      </div>
+
+      <div
+        class="form-group"
+        *ngIf="status === 'Processed'"
+      >
+
+        <label for="paymentDate">
+          Payment Date
+        </label>
+
+        <input
+          id="paymentDate"
+          type="date"
+          [(ngModel)]="paymentDate"
+        />
+
+      </div>
+
+    </div>
+
+    <div class="salary-summary">
+
+      <div class="summary-item">
+
+        <span>
+          Basic Salary
+        </span>
+
+        <strong>
+          ₹{{ basicSalary | number:'1.0-0' }}
+        </strong>
+
+      </div>
+
+      <div class="summary-item">
+
+        <span>
+          Allowances
+        </span>
+
+        <strong>
+          + ₹{{ allowances | number:'1.0-0' }}
+        </strong>
+
+      </div>
+
+      <div class="summary-item">
+
+        <span>
+          Gross Salary
+        </span>
+
+        <strong>
+          ₹{{ grossSalary | number:'1.0-0' }}
+        </strong>
+
+      </div>
+
+      <div class="summary-item deduction">
+
+        <span>
+          Deductions
+        </span>
+
+        <strong>
+          - ₹{{ deductions | number:'1.0-0' }}
+        </strong>
+
+      </div>
+
+      <div class="summary-item total">
+
+        <span>
+          Net Salary
+        </span>
+
+        <strong>
+          ₹{{ netSalary | number:'1.0-0' }}
+        </strong>
+
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="savePayroll()"
+      >
+        {{ isEditMode ? 'Update Payroll' : 'Save Payroll' }}
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,121 @@
+<div
+  *ngIf="!loading && employee"
+  class="details-card"
+>
+
+  <div class="employee-header">
+
+    <div>
+
+      <h2>
+        {{ employee.name }}
+      </h2>
+
+      <span
+        class="status"
+        [class.active]="employee.status === 'Active'"
+        [class.inactive]="employee.status === 'Inactive'"
+      >
+        {{ employee.status }}
+      </span>
+
+    </div>
+
+  </div>
+
+  <div class="details-grid">
+
+    <div class="detail-item">
+      <label>Employee ID</label>
+      <div class="detail-value">
+        {{ employee.id }}
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <label>Full Name</label>
+      <div class="detail-value">
+        {{ employee.name }}
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <label>Email</label>
+      <div class="detail-value">
+        {{ employee.email }}
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <label>Phone</label>
+      <div class="detail-value">
+        {{ employee.phone }}
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <label>Department</label>
+      <div class="detail-value">
+        {{ employee.department }}
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <label>Position</label>
+      <div class="detail-value">
+        {{ employee.position }}
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <label>Joining Date</label>
+      <div class="detail-value">
+        {{ employee.joiningDate }}
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <label>Status</label>
+      <div class="detail-value">
+        {{ employee.status }}
+      </div>
+    </div>
+
+    <div class="detail-item">
+      <label>Salary</label>
+      <div class="detail-value">
+        ₹{{ employee.salary }}
+      </div>
+    </div>
+
+  </div>
+
+  <div class="action-buttons">
+
+    <button
+      type="button"
+      class="edit-button"
+      (click)="editEmployee()"
+    >
+      Edit Employee
+    </button>
+
+    <button
+      type="button"
+      class="delete-button"
+      (click)="deleteEmployee()"
+    >
+      Delete Employee
+    </button>
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="backToEmployees()"
+    >
+      Back to Employees
+    </button>
+
+  </div>
+
+</div>

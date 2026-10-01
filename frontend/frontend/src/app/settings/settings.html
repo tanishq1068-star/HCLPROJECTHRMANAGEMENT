@@ -1,0 +1,734 @@
+<div class="settings-page">
+
+  <!-- ============================= -->
+  <!-- HEADER -->
+  <!-- ============================= -->
+
+  <div class="settings-header">
+    <div>
+      <h1>Settings</h1>
+      <p>
+        Manage your company, notifications and security settings.
+      </p>
+    </div>
+  </div>
+
+  <!-- ============================= -->
+  <!-- TABS -->
+  <!-- ============================= -->
+
+  <div class="settings-tabs">
+
+    <button
+      type="button"
+      class="settings-tab"
+      [class.active]="activeSection === 'Company'"
+      (click)="selectSection('Company')"
+    >
+      <span class="tab-icon">🏢</span>
+      <span>Company</span>
+    </button>
+
+    <button
+      type="button"
+      class="settings-tab"
+      [class.active]="activeSection === 'Notifications'"
+      (click)="selectSection('Notifications')"
+    >
+      <span class="tab-icon">🔔</span>
+      <span>Notifications</span>
+    </button>
+
+    <button
+      type="button"
+      class="settings-tab"
+      [class.active]="activeSection === 'Security'"
+      (click)="selectSection('Security')"
+    >
+      <span class="tab-icon">🔐</span>
+      <span>Security</span>
+    </button>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- COMPANY SETTINGS -->
+  <!-- ===================================================== -->
+
+  <div
+    class="settings-section"
+    *ngIf="activeSection === 'Company'"
+  >
+
+    <div class="section-header">
+      <div>
+        <h2>Company Settings</h2>
+        <p>
+          Manage your company information and working preferences.
+        </p>
+      </div>
+    </div>
+
+    <div class="form-grid">
+
+      <!-- Company Name -->
+
+      <div class="form-group">
+        <label>Company Name</label>
+
+        <input
+          type="text"
+          [(ngModel)]="companySettings.companyName"
+          placeholder="Enter company name"
+        />
+      </div>
+
+
+      <!-- Company Email -->
+
+      <div class="form-group">
+        <label>Company Email</label>
+
+        <input
+          type="email"
+          [(ngModel)]="companySettings.companyEmail"
+          placeholder="Enter company email"
+        />
+      </div>
+
+
+      <!-- Company Phone -->
+
+      <div class="form-group">
+        <label>Company Phone</label>
+
+        <input
+          type="text"
+          [(ngModel)]="companySettings.companyPhone"
+          placeholder="Enter company phone"
+        />
+      </div>
+
+
+      <!-- Address -->
+
+      <div class="form-group full-width">
+        <label>Company Address</label>
+
+        <textarea
+          [(ngModel)]="companySettings.companyAddress"
+          rows="3"
+          placeholder="Enter company address"
+        ></textarea>
+      </div>
+
+
+      <!-- Timezone -->
+
+      <div class="form-group">
+        <label>Timezone</label>
+
+        <select
+          [(ngModel)]="companySettings.timezone"
+        >
+          <option
+            *ngFor="let timezone of timezones"
+            [value]="timezone"
+          >
+            {{ timezone }}
+          </option>
+        </select>
+      </div>
+
+
+      <!-- Currency -->
+
+      <div class="form-group">
+        <label>Currency</label>
+
+        <select
+          [(ngModel)]="companySettings.currency"
+        >
+          <option
+            *ngFor="let currency of currencies"
+            [value]="currency"
+          >
+            {{ currency }}
+          </option>
+        </select>
+      </div>
+
+
+      <!-- Date Format -->
+
+      <div class="form-group">
+        <label>Date Format</label>
+
+        <select
+          [(ngModel)]="companySettings.dateFormat"
+        >
+          <option
+            *ngFor="let format of dateFormats"
+            [value]="format"
+          >
+            {{ format }}
+          </option>
+        </select>
+      </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- WORKING DAYS -->
+    <!-- ============================= -->
+
+    <div class="settings-block">
+
+      <h3>Working Days</h3>
+
+      <p>
+        Select the days your company operates.
+      </p>
+
+      <div class="days-grid">
+
+        <button
+          type="button"
+          *ngFor="let day of weekDays"
+          class="day-button"
+          [class.selected]="isWorkingDay(day)"
+          (click)="toggleWorkingDay(day)"
+        >
+          <span class="day-check">
+            {{ isWorkingDay(day) ? '✓' : '' }}
+          </span>
+
+          {{ day }}
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- WORKING HOURS -->
+    <!-- ============================= -->
+
+    <div class="settings-block">
+
+      <h3>Working Hours</h3>
+
+      <p>
+        Configure your company's standard working hours.
+      </p>
+
+      <div class="working-hours">
+
+        <div class="form-group">
+          <label>Start Time</label>
+
+          <input
+            type="time"
+            [(ngModel)]="companySettings.workingHoursStart"
+          />
+        </div>
+
+        <div class="time-separator">
+          to
+        </div>
+
+        <div class="form-group">
+          <label>End Time</label>
+
+          <input
+            type="time"
+            [(ngModel)]="companySettings.workingHoursEnd"
+          />
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ============================= -->
+    <!-- SAVE -->
+    <!-- ============================= -->
+
+    <div class="settings-actions">
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="resetSettings()"
+      >
+        Reset
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="saveCompanySettings()"
+      >
+        Save Company Settings
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- NOTIFICATIONS -->
+  <!-- ===================================================== -->
+
+  <div
+    class="settings-section"
+    *ngIf="activeSection === 'Notifications'"
+  >
+
+    <div class="section-header">
+      <div>
+        <h2>Notification Settings</h2>
+        <p>
+          Choose which notifications you want to receive.
+        </p>
+      </div>
+    </div>
+
+
+    <div class="notification-list">
+
+      <!-- Email -->
+
+      <div class="notification-card">
+
+        <div class="notification-icon">
+          ✉️
+        </div>
+
+        <div class="notification-content">
+          <h3>Email Notifications</h3>
+          <p>
+            Receive important HR system updates through email.
+          </p>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="notificationSettings.emailNotifications"
+          />
+
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+
+      <!-- Leave -->
+
+      <div class="notification-card">
+
+        <div class="notification-icon">
+          🏖️
+        </div>
+
+        <div class="notification-content">
+          <h3>Leave Notifications</h3>
+          <p>
+            Get notifications when employees apply for leave.
+          </p>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="notificationSettings.leaveNotifications"
+          />
+
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+
+      <!-- Attendance -->
+
+      <div class="notification-card">
+
+        <div class="notification-icon">
+          🕘
+        </div>
+
+        <div class="notification-content">
+          <h3>Attendance Notifications</h3>
+          <p>
+            Receive attendance and absence notifications.
+          </p>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="notificationSettings.attendanceNotifications"
+          />
+
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+
+      <!-- Payroll -->
+
+      <div class="notification-card">
+
+        <div class="notification-icon">
+          💰
+        </div>
+
+        <div class="notification-content">
+          <h3>Payroll Notifications</h3>
+          <p>
+            Get notified about payroll processing and updates.
+          </p>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="notificationSettings.payrollNotifications"
+          />
+
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+
+      <!-- Performance -->
+
+      <div class="notification-card">
+
+        <div class="notification-icon">
+          ⭐
+        </div>
+
+        <div class="notification-content">
+          <h3>Performance Notifications</h3>
+          <p>
+            Receive notifications about employee performance reviews.
+          </p>
+        </div>
+
+        <label class="switch">
+          <input
+            type="checkbox"
+            [(ngModel)]="notificationSettings.performanceNotifications"
+          />
+
+          <span class="slider"></span>
+        </label>
+
+      </div>
+
+    </div>
+
+
+    <div class="settings-actions">
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="resetSettings()"
+      >
+        Reset
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="saveNotificationSettings()"
+      >
+        Save Notifications
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- ===================================================== -->
+  <!-- SECURITY -->
+  <!-- ===================================================== -->
+
+  <div
+    class="settings-section"
+    *ngIf="activeSection === 'Security'"
+  >
+
+    <div class="section-header">
+      <div>
+        <h2>Security Settings</h2>
+        <p>
+          Manage your account password and security settings.
+        </p>
+      </div>
+    </div>
+
+
+    <div class="security-list">
+
+
+      <!-- ACCOUNT PASSWORD -->
+
+      <div class="security-card">
+
+        <div class="security-icon password-icon">
+          🔐
+        </div>
+
+        <div class="security-content">
+
+          <h3>Account Password</h3>
+
+          <p>
+            Change your current password to keep your HRGenius
+            account secure.
+          </p>
+
+          <div class="security-info">
+            <span class="info-dot"></span>
+            Last password change: Never
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="security-btn primary"
+          (click)="changePassword()"
+        >
+          Change Password
+        </button>
+
+      </div>
+
+
+      <!-- TWO FACTOR -->
+
+      <div class="security-card">
+
+        <div class="security-icon two-factor-icon">
+          🛡️
+        </div>
+
+        <div class="security-content">
+
+          <h3>Two-Factor Authentication</h3>
+
+          <p>
+            Add an extra layer of protection to your HRGenius
+            account.
+          </p>
+
+          <div class="security-status">
+
+            <span
+              class="status-dot"
+              [class.active]="twoFactorEnabled"
+              [class.inactive]="!twoFactorEnabled"
+            ></span>
+
+            <span>
+              {{ twoFactorEnabled ? 'Enabled' : 'Not enabled' }}
+            </span>
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="security-btn secondary"
+          (click)="enableTwoFactor()"
+        >
+          {{ twoFactorEnabled ? 'Disable' : 'Enable' }}
+        </button>
+
+      </div>
+
+
+      <!-- LOGIN SESSIONS -->
+
+      <div class="security-card">
+
+        <div class="security-icon session-icon">
+          💻
+        </div>
+
+        <div class="security-content">
+
+          <h3>Login Sessions</h3>
+
+          <p>
+            Review the devices and browsers currently signed
+            in to your account.
+          </p>
+
+          <div class="security-info">
+            <span class="info-dot active"></span>
+            1 active session
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="security-btn secondary"
+          (click)="viewSessions()"
+        >
+          View Sessions
+        </button>
+
+      </div>
+
+
+      <!-- LOGIN ACTIVITY -->
+
+      <div class="security-card">
+
+        <div class="security-icon activity-icon">
+          📊
+        </div>
+
+        <div class="security-content">
+
+          <h3>Login Activity</h3>
+
+          <p>
+            Monitor recent login activity and keep track of
+            account access.
+          </p>
+
+          <div class="security-info">
+            <span class="info-dot active"></span>
+            Account activity looks normal
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="security-btn secondary"
+          (click)="viewActivity()"
+        >
+          View Activity
+        </button>
+
+      </div>
+
+
+      <!-- EMAIL SECURITY -->
+
+      <div class="security-card">
+
+        <div class="security-icon email-icon">
+          ✉️
+        </div>
+
+        <div class="security-content">
+
+          <h3>Email Security</h3>
+
+          <p>
+            Manage your account email and security notifications.
+          </p>
+
+          <div class="security-info">
+            <span class="info-dot active"></span>
+            Email verified
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="security-btn secondary"
+          (click)="manageEmailSecurity()"
+        >
+          Manage
+        </button>
+
+      </div>
+
+
+      <!-- SECURITY ALERTS -->
+
+      <div class="security-card">
+
+        <div class="security-icon alert-icon">
+          🔔
+        </div>
+
+        <div class="security-content">
+
+          <h3>Security Alerts</h3>
+
+          <p>
+            Receive notifications when unusual account activity
+            is detected.
+          </p>
+
+          <div class="security-status">
+
+            <span
+              class="status-dot"
+              [class.active]="securityAlertsEnabled"
+              [class.inactive]="!securityAlertsEnabled"
+            ></span>
+
+            <span>
+              {{
+                securityAlertsEnabled
+                  ? 'Alerts enabled'
+                  : 'Alerts disabled'
+              }}
+            </span>
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="security-btn secondary"
+          (click)="configureSecurityAlerts()"
+        >
+          Configure
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div class="settings-actions">
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="resetSettings()"
+      >
+        Reset All Settings
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

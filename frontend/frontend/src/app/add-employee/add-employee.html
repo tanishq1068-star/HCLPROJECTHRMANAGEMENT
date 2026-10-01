@@ -1,0 +1,256 @@
+<div class="add-employee-page">
+
+  <div class="page-header">
+
+    <div>
+      <h1>{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h1>
+
+      <p>
+        {{ isEditMode
+          ? 'Update employee information'
+          : 'Add a new employee to your organization' }}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="back-btn"
+      (click)="cancel()">
+      ← Back to Employees
+    </button>
+
+  </div>
+
+
+  <div class="form-card">
+
+    <!-- BASIC INFORMATION -->
+    <div class="form-section">
+
+      <div class="section-title">
+        <h2>Basic Information</h2>
+
+        <p>
+          Enter the employee's personal and contact information.
+        </p>
+      </div>
+
+
+      <div class="form-grid">
+
+        <!-- EMPLOYEE ID - EDIT ONLY -->
+        <div
+          class="form-group"
+          *ngIf="isEditMode">
+
+          <label>
+            Employee ID
+          </label>
+
+          <input
+            type="text"
+            name="employeeId"
+            [(ngModel)]="employee.id"
+            readonly>
+        </div>
+
+
+        <!-- NAME -->
+        <div class="form-group">
+
+          <label>
+            Full Name <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            name="employeeName"
+            [(ngModel)]="employee.name"
+            placeholder="Enter full name">
+        </div>
+
+
+        <!-- EMAIL -->
+        <div class="form-group">
+
+          <label>
+            Email Address <span>*</span>
+          </label>
+
+          <input
+            type="email"
+            name="employeeEmail"
+            [(ngModel)]="employee.email"
+            placeholder="employee@example.com">
+        </div>
+
+
+        <!-- PHONE -->
+        <div class="form-group">
+
+          <label>
+            Phone Number <span>*</span>
+          </label>
+
+          <input
+            type="tel"
+            name="employeePhone"
+            [(ngModel)]="employee.phone"
+            placeholder="+91 9876543210">
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- EMPLOYMENT INFORMATION -->
+    <div class="form-section">
+
+      <div class="section-title">
+
+        <h2>Employment Information</h2>
+
+        <p>
+          Enter the employee's organizational details.
+        </p>
+
+      </div>
+
+
+      <div class="form-grid">
+
+        <!-- DEPARTMENT -->
+        <div class="form-group">
+
+          <label>
+            Department <span>*</span>
+          </label>
+
+          <select
+            name="department"
+            [(ngModel)]="employee.department">
+
+            <option value="IT">IT</option>
+            <option value="HR">HR</option>
+            <option value="Finance">Finance</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Sales">Sales</option>
+            <option value="Operations">Operations</option>
+            <option value="Design">Design</option>
+            <option value="Data Science">Data Science</option>
+
+          </select>
+
+        </div>
+
+
+        <!-- POSITION -->
+        <div class="form-group">
+
+          <label>
+            Position <span>*</span>
+          </label>
+
+          <input
+            type="text"
+            name="position"
+            [(ngModel)]="employee.position"
+            placeholder="e.g. Software Developer">
+
+        </div>
+
+
+        <!-- JOINING DATE -->
+        <div class="form-group">
+
+          <label>
+            Joining Date <span>*</span>
+          </label>
+
+          <input
+            type="date"
+            name="joiningDate"
+            [(ngModel)]="employee.joiningDate">
+
+        </div>
+
+
+        <!-- STATUS -->
+        <div class="form-group">
+
+          <label>
+            Status
+          </label>
+
+          <select
+            name="status"
+            [(ngModel)]="employee.status">
+
+            <option value="Active">
+              Active
+            </option>
+
+            <option value="Inactive">
+              Inactive
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- SALARY -->
+        <div class="form-group">
+
+          <label>
+            Salary <span>*</span>
+          </label>
+
+          <input
+            type="number"
+            name="salary"
+            [(ngModel)]="employee.salary"
+            min="0"
+            step="1000"
+            placeholder="Enter salary">
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ACTION BUTTONS -->
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="cancel-btn"
+        (click)="cancel()">
+
+        Cancel
+
+      </button>
+
+
+      <button
+        type="button"
+        class="save-btn"
+        [disabled]="saving"
+        (click)="saveEmployee()">
+
+        {{ saving
+          ? 'Saving...'
+          : (isEditMode
+              ? 'Update Employee'
+              : 'Save Employee') }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

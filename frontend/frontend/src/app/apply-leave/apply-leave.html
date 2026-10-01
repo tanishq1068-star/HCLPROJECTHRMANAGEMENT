@@ -1,0 +1,108 @@
+<div class="page">
+
+  <div class="header">
+    <div>
+      <h1>Apply Leave</h1>
+      <p>Submit a new leave request</p>
+    </div>
+
+    <button class="back-btn" (click)="cancel()">
+      ← Back to Leave Management
+    </button>
+  </div>
+
+
+  <div class="form-card">
+
+    <h2>Leave Information</h2>
+
+    <form>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label>Employee</label>
+
+          <select>
+            <option value="">Select Employee</option>
+            <option>EMP001 - Aditya Sharma</option>
+            <option>EMP002 - Rahul Kumar</option>
+            <option>EMP003 - Priya Singh</option>
+            <option>EMP004 - Ananya Mehta</option>
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label>Leave Type</label>
+
+          <select>
+            <option value="">Select Leave Type</option>
+            <option>Casual Leave</option>
+            <option>Sick Leave</option>
+            <option>Earned Leave</option>
+            <option>Emergency Leave</option>
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label>Start Date</label>
+
+          <input type="date">
+        </div>
+
+
+        <div class="form-group">
+          <label>End Date</label>
+
+          <input type="date">
+        </div>
+
+
+        <div class="form-group">
+          <label>Number of Days</label>
+
+          <input
+            type="number"
+            placeholder="Enter number of days">
+        </div>
+
+      </div>
+
+
+      <div class="form-group full-width">
+
+        <label>Reason for Leave</label>
+
+        <textarea
+          rows="5"
+          placeholder="Enter reason for leave...">
+        </textarea>
+
+      </div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="cancel()">
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="save-btn"
+          (click)="applyLeave()">
+          Submit Leave Request
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

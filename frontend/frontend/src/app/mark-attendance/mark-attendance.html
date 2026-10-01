@@ -1,0 +1,215 @@
+<div class="page-container">
+
+  <div class="page-header">
+    <div>
+      <h1>{{ isEditMode ? 'Edit Attendance' : 'Mark Attendance' }}</h1>
+      <p>
+        {{ isEditMode
+          ? 'Update the attendance record for an employee.'
+          : 'Record employee attendance for a selected date.' }}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="cancel()"
+    >
+      Back to Attendance
+    </button>
+  </div>
+
+  <div class="form-card">
+
+    <form (ngSubmit)="saveAttendance()">
+
+      <div class="section-title">
+        <h2>Attendance Information</h2>
+        <p>Select the employee and attendance details.</p>
+      </div>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="employee">
+            Employee <span>*</span>
+          </label>
+
+          <select
+            id="employee"
+            name="employee"
+            [(ngModel)]="selectedEmployeeId"
+            [disabled]="isEditMode"
+            required
+          >
+            <option value="">
+              Select Employee
+            </option>
+
+            <option
+              *ngFor="let employee of employees"
+              [value]="employee.id"
+            >
+              {{ employee.name }} ({{ employee.id }})
+            </option>
+          </select>
+
+          <small *ngIf="isEditMode">
+            Employee cannot be changed while editing an existing record.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="date">
+            Attendance Date <span>*</span>
+          </label>
+
+          <input
+            id="date"
+            name="date"
+            type="date"
+            [(ngModel)]="selectedDate"
+            [disabled]="isEditMode"
+            required
+          />
+
+          <small *ngIf="isEditMode">
+            Date cannot be changed while editing an existing record.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="status">
+            Attendance Status <span>*</span>
+          </label>
+
+          <select
+            id="status"
+            name="status"
+            [(ngModel)]="selectedStatus"
+            (ngModelChange)="onStatusChange()"
+            required
+          >
+            <option value="">
+              Select Status
+            </option>
+
+            <option
+              *ngFor="let status of statusOptions"
+              [value]="status"
+            >
+              {{ status }}
+            </option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="section-title time-section">
+        <h2>Working Hours</h2>
+        <p>
+          Check-in is required for Present, Late and Half Day statuses.
+        </p>
+      </div>
+
+      <div class="form-grid">
+
+        <div class="form-group">
+          <label for="checkIn">
+            Check In
+          </label>
+
+          <input
+            id="checkIn"
+            name="checkIn"
+            type="time"
+            [(ngModel)]="checkIn"
+            (ngModelChange)="onCheckInChange()"
+            [disabled]="
+              selectedStatus === 'Absent' ||
+              selectedStatus === 'On Leave'
+            "
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="checkOut">
+            Check Out
+          </label>
+
+          <input
+            id="checkOut"
+            name="checkOut"
+            type="time"
+            [(ngModel)]="checkOut"
+            [disabled]="
+              selectedStatus === 'Absent' ||
+              selectedStatus === 'On Leave'
+            "
+          />
+        </div>
+
+      </div>
+
+      <div class="info-message" *ngIf="selectedStatus === 'Absent'">
+        <span>ℹ</span>
+        <p>
+          Check-in and check-out times are not required for an absent employee.
+        </p>
+      </div>
+
+      <div class="info-message" *ngIf="selectedStatus === 'On Leave'">
+        <span>ℹ</span>
+        <p>
+          Check-in and check-out times are disabled because the employee is on leave.
+        </p>
+      </div>
+
+      <div class="section-title remarks-section">
+        <h2>Remarks</h2>
+        <p>Add any additional attendance information.</p>
+      </div>
+
+      <div class="form-group full-width">
+        <label for="remarks">
+          Remarks
+        </label>
+
+        <textarea
+          id="remarks"
+          name="remarks"
+          [(ngModel)]="remarks"
+          rows="4"
+          maxlength="250"
+          placeholder="Enter attendance remarks..."
+        ></textarea>
+
+        <div class="character-count">
+          {{ remarks.length }}/250
+        </div>
+      </div>
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          {{ isEditMode ? 'Update Attendance' : 'Save Attendance' }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

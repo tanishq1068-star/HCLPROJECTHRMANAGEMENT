@@ -1,0 +1,737 @@
+<div class="page-container">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Reports & Analytics</h1>
+      <p>
+        View employee, payroll, attendance and leave reports in one place.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="exportReport()"
+    >
+      ↓ Export Report
+    </button>
+
+  </div>
+
+  <div class="card report-selector">
+
+    <div class="selector-content">
+
+      <div>
+        <h2>Select Report</h2>
+        <p>
+          Choose a report category to view detailed information.
+        </p>
+      </div>
+
+      <select
+        [(ngModel)]="selectedReport"
+        (change)="onReportChange()"
+      >
+
+        <option
+          *ngFor="let report of reportOptions"
+          [value]="report"
+        >
+          {{ report }}
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+  <div
+    class="stats-grid"
+    *ngIf="selectedReport === 'Overview'"
+  >
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        👥
+      </div>
+
+      <div>
+        <span>Total Employees</span>
+        <strong>
+          {{ totalEmployees }}
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        ✓
+      </div>
+
+      <div>
+        <span>Active Employees</span>
+        <strong>
+          {{ activeEmployees }}
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        ₹
+      </div>
+
+      <div>
+        <span>Total Payroll</span>
+        <strong>
+          ₹{{ formatCurrency(totalPayroll) }}
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        %
+      </div>
+
+      <div>
+        <span>Attendance</span>
+        <strong>
+          {{ attendancePercentage }}%
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-icon">
+        📋
+      </div>
+
+      <div>
+        <span>Leave Requests</span>
+        <strong>
+          {{ totalLeaveRequests }}
+        </strong>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    class="overview-grid"
+    *ngIf="selectedReport === 'Overview'"
+  >
+
+    <div class="card report-card">
+
+      <div class="card-header">
+
+        <div>
+          <h2>Employee Summary</h2>
+          <p>Current employee distribution.</p>
+        </div>
+
+      </div>
+
+      <div class="summary-list">
+
+        <div class="summary-row">
+
+          <span>
+            Total Employees
+          </span>
+
+          <strong>
+            {{ totalEmployees }}
+          </strong>
+
+        </div>
+
+        <div class="summary-row">
+
+          <span>
+            Active Employees
+          </span>
+
+          <strong class="success-text">
+            {{ activeEmployees }}
+          </strong>
+
+        </div>
+
+        <div class="summary-row">
+
+          <span>
+            Inactive Employees
+          </span>
+
+          <strong class="danger-text">
+            {{ inactiveEmployees }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card report-card">
+
+      <div class="card-header">
+
+        <div>
+          <h2>Leave Summary</h2>
+          <p>Current leave request status.</p>
+        </div>
+
+      </div>
+
+      <div class="summary-list">
+
+        <div class="summary-row">
+
+          <span>
+            Total Requests
+          </span>
+
+          <strong>
+            {{ totalLeaveRequests }}
+          </strong>
+
+        </div>
+
+        <div class="summary-row">
+
+          <span>
+            Approved
+          </span>
+
+          <strong class="success-text">
+            {{ approvedLeaves }}
+          </strong>
+
+        </div>
+
+        <div class="summary-row">
+
+          <span>
+            Pending
+          </span>
+
+          <strong class="warning-text">
+            {{ pendingLeaves }}
+          </strong>
+
+        </div>
+
+        <div class="summary-row">
+
+          <span>
+            Rejected
+          </span>
+
+          <strong class="danger-text">
+            {{ rejectedLeaves }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    class="card report-card"
+    *ngIf="selectedReport === 'Employees'"
+  >
+
+    <div class="card-header">
+
+      <div>
+        <h2>Employee Report</h2>
+        <p>
+          Employee information and current employment status.
+        </p>
+      </div>
+
+      <span class="record-count">
+        {{ employees.length }} records
+      </span>
+
+    </div>
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Employee ID</th>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Position</th>
+            <th>Joining Date</th>
+            <th>Status</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="let employee of employees"
+          >
+
+            <td>
+              <strong>
+                {{ employee.id }}
+              </strong>
+            </td>
+
+            <td>
+              {{ employee.name }}
+            </td>
+
+            <td>
+              {{ employee.department }}
+            </td>
+
+            <td>
+              {{ employee.position }}
+            </td>
+
+            <td>
+              {{ employee.joiningDate }}
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="
+                  getStatusClass(employee.status)
+                "
+              >
+                {{ employee.status }}
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <div
+    class="card report-card"
+    *ngIf="selectedReport === 'Payroll'"
+  >
+
+    <div class="card-header">
+
+      <div>
+        <h2>Payroll Report</h2>
+        <p>
+          Employee salary and payroll information.
+        </p>
+      </div>
+
+      <span class="record-count">
+        {{ payrollReport.length }} records
+      </span>
+
+    </div>
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Basic Salary</th>
+            <th>Gross Salary</th>
+            <th>Deductions</th>
+            <th>Net Salary</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="let record of payrollReport"
+          >
+
+            <td>
+
+              <div class="employee-cell">
+
+                <strong>
+                  {{ record.employeeName }}
+                </strong>
+
+                <span>
+                  {{ record.employeeId }}
+                </span>
+
+              </div>
+
+            </td>
+
+            <td>
+              {{ record.department }}
+            </td>
+
+            <td>
+              ₹{{ formatCurrency(record.basicSalary) }}
+            </td>
+
+            <td>
+              ₹{{ formatCurrency(record.grossSalary) }}
+            </td>
+
+            <td class="negative-value">
+              -₹{{ formatCurrency(record.deductions) }}
+            </td>
+
+            <td>
+
+              <strong class="net-value">
+                ₹{{ formatCurrency(record.netSalary) }}
+              </strong>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <div
+    class="card report-card"
+    *ngIf="selectedReport === 'Attendance'"
+  >
+
+    <div class="card-header">
+
+      <div>
+        <h2>Attendance Report</h2>
+        <p>
+          Employee attendance distribution.
+        </p>
+      </div>
+
+      <span class="record-count">
+        {{ attendance.length }} records
+      </span>
+
+    </div>
+
+    <div class="attendance-summary">
+
+      <div
+        class="attendance-item"
+        *ngFor="let report of attendanceReport"
+      >
+
+        <div class="attendance-item-header">
+
+          <span>
+            {{ report.status }}
+          </span>
+
+          <strong>
+            {{ report.count }}
+          </strong>
+
+        </div>
+
+        <div class="progress-track">
+
+          <div
+            class="progress-fill"
+            [ngClass]="
+              getStatusClass(report.status)
+            "
+            [style.width.%]="
+              getAttendancePercentage(report)
+            "
+          ></div>
+
+        </div>
+
+        <small>
+          {{ report.percentage }}%
+        </small>
+
+      </div>
+
+    </div>
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Date</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+            <th>Status</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="let record of attendance"
+          >
+
+            <td>
+              {{ record.employeeName }}
+            </td>
+
+            <td>
+              {{ record.department }}
+            </td>
+
+            <td>
+              {{ record.date }}
+            </td>
+
+            <td>
+              {{ record.checkIn }}
+            </td>
+
+            <td>
+              {{ record.checkOut }}
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="
+                  getStatusClass(record.status)
+                "
+              >
+                {{ record.status }}
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+  <div
+    class="card report-card"
+    *ngIf="selectedReport === 'Leave'"
+  >
+
+    <div class="card-header">
+
+      <div>
+        <h2>Leave Report</h2>
+        <p>
+          Leave requests grouped by leave type.
+        </p>
+      </div>
+
+      <span class="record-count">
+        {{ leaves.length }} requests
+      </span>
+
+    </div>
+
+    <div class="leave-summary-grid">
+
+      <div
+        class="leave-summary-card"
+        *ngFor="let report of leaveReport"
+      >
+
+        <h3>
+          {{ report.leaveType }}
+        </h3>
+
+        <div class="leave-main-number">
+          {{ report.totalRequests }}
+        </div>
+
+        <span>
+          total requests
+        </span>
+
+        <div class="leave-stats">
+
+          <div>
+            <strong class="success-text">
+              {{ report.approved }}
+            </strong>
+            <small>Approved</small>
+          </div>
+
+          <div>
+            <strong class="warning-text">
+              {{ report.pending }}
+            </strong>
+            <small>Pending</small>
+          </div>
+
+          <div>
+            <strong class="danger-text">
+              {{ report.rejected }}
+            </strong>
+            <small>Rejected</small>
+          </div>
+
+        </div>
+
+        <div class="leave-days">
+          {{ report.totalDays }}
+          total days requested
+        </div>
+
+        <div class="progress-track">
+
+          <div
+            class="progress-fill"
+            [style.width.%]="
+              getLeaveApprovalPercentage(report)
+            "
+          ></div>
+
+        </div>
+
+        <small>
+          {{ getLeaveApprovalPercentage(report) }}%
+          approved
+        </small>
+
+      </div>
+
+    </div>
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Leave ID</th>
+            <th>Employee</th>
+            <th>Leave Type</th>
+            <th>Dates</th>
+            <th>Days</th>
+            <th>Status</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="let leave of leaves"
+          >
+
+            <td>
+              <strong>
+                {{ leave.id }}
+              </strong>
+            </td>
+
+            <td>
+
+              <div class="employee-cell">
+
+                <strong>
+                  {{ leave.employeeName }}
+                </strong>
+
+                <span>
+                  {{ leave.employeeId }}
+                </span>
+
+              </div>
+
+            </td>
+
+            <td>
+              {{ leave.leaveType }}
+            </td>
+
+            <td>
+              {{ leave.startDate }}
+              →
+              {{ leave.endDate }}
+            </td>
+
+            <td>
+              {{ leave.days }}
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="
+                  getStatusClass(leave.status)
+                "
+              >
+                {{ leave.status }}
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

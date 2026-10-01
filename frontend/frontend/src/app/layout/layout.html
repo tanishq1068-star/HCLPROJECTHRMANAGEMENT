@@ -1,0 +1,135 @@
+<div class="dashboard">
+
+  <aside class="sidebar">
+
+    <div class="logo-section">
+      <h2>HRGenius</h2>
+      <p>HR Management System</p>
+    </div>
+
+    <nav class="sidebar-nav">
+
+      <a
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-link">
+        <span>🏠</span>
+        <span>Dashboard</span>
+      </a>
+
+      <a
+        routerLink="/employees"
+        routerLinkActive="active"
+        class="nav-link">
+        <span>👥</span>
+        <span>Employees</span>
+      </a>
+
+      <a
+        routerLink="/recruitment"
+        routerLinkActive="active"
+        class="nav-link">
+        <span>💼</span>
+        <span>Recruitment</span>
+      </a>
+
+      <a
+        routerLink="/attendance"
+        routerLinkActive="active"
+        class="nav-link">
+        <span>📅</span>
+        <span>Attendance</span>
+      </a>
+
+      <a
+        routerLink="/leave-management"
+        routerLinkActive="active"
+        class="nav-link">
+        <span>📝</span>
+        <span>Leave Management</span>
+      </a>
+
+      <a
+        routerLink="/payroll"
+        routerLinkActive="active"
+        class="nav-link">
+        <span>💰</span>
+        <span>Payroll</span>
+      </a>
+
+      <a
+        routerLink="/performance"
+        routerLinkActive="active"
+        class="nav-link">
+        <span>📊</span>
+        <span>Performance</span>
+      </a>
+
+      <a
+        routerLink="/reports"
+        routerLinkActive="active"
+        class="nav-link">
+        <span>📄</span>
+        <span>Reports</span>
+      </a>
+
+      <a
+        routerLink="/settings"
+        routerLinkActive="active"
+        class="nav-link">
+        <span>⚙️</span>
+        <span>Settings</span>
+      </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+      <button
+        type="button"
+        class="logout-btn"
+        (click)="logout()">
+
+        <span>🚪</span>
+        <span>Logout</span>
+
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <main class="main-content">
+
+    <header class="top-header">
+
+      <div>
+        <h1>HRGenius</h1>
+        <p>Human Resource Management System</p>
+      </div>
+
+      <div class="user-profile">
+
+        <div class="user-avatar">
+          {{ userInitial }}
+        </div>
+
+        <div class="user-info">
+          <strong>{{ userName }}</strong>
+          <span>{{ userRole }}</span>
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+
+  </main>
+
+</div>

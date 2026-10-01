@@ -1,0 +1,335 @@
+<div class="page-container">
+
+  <div class="page-header">
+
+    <div>
+      <h1>
+        {{ isEditMode ? 'Edit Leave Request' : 'Apply Leave' }}
+      </h1>
+
+      <p>
+        {{ isEditMode
+          ? 'Update the employee leave request.'
+          : 'Submit a new employee leave request.' }}
+      </p>
+    </div>
+
+    <a
+      routerLink="/leave-management"
+      class="btn btn-secondary"
+    >
+      ← Back to Leave Management
+    </a>
+
+  </div>
+
+  <div class="form-card card">
+
+    <div class="section-title">
+      <h2>Leave Information</h2>
+      <p>
+        Enter the details of the leave request.
+      </p>
+    </div>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label for="employee">
+          Employee <span class="required">*</span>
+        </label>
+
+        <select
+          id="employee"
+          [(ngModel)]="selectedEmployeeId"
+          [disabled]="isReadOnly"
+        >
+
+          <option value="">
+            Select employee
+          </option>
+
+          <option
+            *ngFor="let employee of employees"
+            [value]="employee.id"
+          >
+            {{ employee.name }} — {{ employee.id }}
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="leaveType">
+          Leave Type <span class="required">*</span>
+        </label>
+
+        <select
+          id="leaveType"
+          [(ngModel)]="leaveType"
+          [disabled]="isReadOnly"
+        >
+
+          <option value="">
+            Select leave type
+          </option>
+
+          <option
+            *ngFor="let type of leaveTypes"
+            [value]="type"
+          >
+            {{ type }}
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="startDate">
+          Start Date <span class="required">*</span>
+        </label>
+
+        <input
+          id="startDate"
+          type="date"
+          [(ngModel)]="startDate"
+          (change)="onDateChange()"
+          [disabled]="isReadOnly"
+        />
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="endDate">
+          End Date <span class="required">*</span>
+        </label>
+
+        <input
+          id="endDate"
+          type="date"
+          [(ngModel)]="endDate"
+          (change)="onDateChange()"
+          [disabled]="isReadOnly"
+        />
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Total Leave Days
+        </label>
+
+        <div class="calculated-value">
+          {{ days }}
+          {{ days === 1 ? 'Day' : 'Days' }}
+        </div>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Available Balance
+        </label>
+
+        <div
+          class="calculated-value"
+          [ngClass]="{
+            'balance-warning':
+              leaveType !== 'Unpaid Leave' &&
+              days > getAvailableDaysForRequest()
+          }"
+        >
+
+          <ng-container
+            *ngIf="
+              leaveType !== 'Unpaid Leave';
+              else unpaidBalance
+            "
+          >
+            {{ getAvailableDaysForRequest() }}
+            {{
+              getAvailableDaysForRequest() === 1
+                ? 'Day'
+                : 'Days'
+            }}
+          </ng-container>
+
+          <ng-template #unpaidBalance>
+            No balance limit
+          </ng-template>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      class="leave-balance-panel"
+      *ngIf="leaveBalance"
+    >
+
+      <div class="balance-panel-header">
+
+        <div>
+          <h3>
+            {{ leaveBalance.employeeName }} — Leave Balance
+          </h3>
+
+          <p>
+            Employee ID: {{ leaveBalance.employeeId }}
+          </p>
+        </div>
+
+        <div class="remaining-days">
+
+          <strong>
+            {{ leaveBalance.totalRemaining }}
+          </strong>
+
+          <span>
+            total days remaining
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="balance-type-grid">
+
+        <div class="balance-type-card">
+
+          <span>
+            Casual Leave
+          </span>
+
+          <strong>
+            {{ leaveBalance.casualLeave }}
+          </strong>
+
+          <small>
+            days remaining
+          </small>
+
+        </div>
+
+        <div class="balance-type-card">
+
+          <span>
+            Sick Leave
+          </span>
+
+          <strong>
+            {{ leaveBalance.sickLeave }}
+          </strong>
+
+          <small>
+            days remaining
+          </small>
+
+        </div>
+
+        <div class="balance-type-card">
+
+          <span>
+            Earned Leave
+          </span>
+
+          <strong>
+            {{ leaveBalance.earnedLeave }}
+          </strong>
+
+          <small>
+            days remaining
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      class="validation-message"
+      *ngIf="
+        leaveType !== 'Unpaid Leave' &&
+        days > 0 &&
+        days > getAvailableDaysForRequest()
+      "
+    >
+
+      <strong>
+        Insufficient leave balance.
+      </strong>
+
+      <span>
+        You are requesting {{ days }} days, but only
+        {{ getAvailableDaysForRequest() }} days are available.
+      </span>
+
+    </div>
+
+    <div class="form-group full-width">
+
+      <label for="reason">
+        Reason
+      </label>
+
+      <textarea
+        id="reason"
+        [(ngModel)]="reason"
+        rows="5"
+        maxlength="500"
+        placeholder="Enter the reason for this leave request..."
+        [disabled]="isReadOnly"
+      ></textarea>
+
+      <div class="character-count">
+        {{ reason.length }} / 500
+      </div>
+
+    </div>
+
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="cancel()"
+      >
+        Back
+      </button>
+
+      <button
+        *ngIf="!isReadOnly"
+        type="button"
+        class="btn btn-primary"
+        (click)="saveLeave()"
+        [disabled]="
+          !selectedEmployeeId ||
+          !leaveType ||
+          !startDate ||
+          !endDate ||
+          days <= 0 ||
+          (
+            leaveType !== 'Unpaid Leave' &&
+            days > getAvailableDaysForRequest()
+          )
+        "
+      >
+        {{ isEditMode ? 'Update Leave' : 'Submit Leave' }}
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

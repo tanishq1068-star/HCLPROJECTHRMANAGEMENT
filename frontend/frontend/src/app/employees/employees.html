@@ -1,0 +1,397 @@
+<div class="page-container">
+
+  <!-- HEADER -->
+  <div class="page-header">
+
+    <div>
+      <h1>Employees</h1>
+
+      <p>
+        Manage your organization's employees
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="addEmployee()"
+    >
+      + Add Employee
+    </button>
+
+  </div>
+
+
+  <!-- SEARCH -->
+  <div class="card search-card">
+
+    <div class="search-box">
+
+      <span class="search-icon" aria-hidden="true"></span>
+
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (input)="searchEmployees()"
+        placeholder="Search employees by name, ID, department..."
+      />
+
+    </div>
+
+  </div>
+
+
+  <!-- EMPLOYEE LIST -->
+  <div class="card employee-card">
+
+    <!-- TABLE HEADER -->
+    <div class="employee-card-header">
+
+      <div>
+
+        <h2>
+          Employee List
+        </h2>
+
+        <p>
+          View and manage all employees
+        </p>
+
+      </div>
+
+      <span class="employee-count">
+        {{ filteredEmployees.length }}
+        {{ filteredEmployees.length === 1 ? 'Employee' : 'Employees' }}
+      </span>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- LOADING -->
+    <!-- ========================= -->
+
+    <div
+      *ngIf="loading"
+      class="loading-container"
+    >
+
+      <div class="loading-spinner"></div>
+
+      <h3>
+        Loading employees
+      </h3>
+
+      <p>
+        Please wait while we load the employee records...
+      </p>
+
+      <div class="skeleton-list">
+
+        <div
+          class="skeleton-row"
+          *ngFor="let item of [1, 2, 3, 4]"
+        >
+
+          <div class="skeleton-avatar"></div>
+
+          <div class="skeleton-content">
+
+            <div class="skeleton-line large"></div>
+
+            <div class="skeleton-line small"></div>
+
+          </div>
+
+          <div class="skeleton-block"></div>
+
+          <div class="skeleton-block"></div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- ERROR -->
+    <!-- ========================= -->
+
+    <div
+      *ngIf="!loading && errorMessage"
+      class="error-state"
+    >
+
+      <div class="error-icon">
+        !
+      </div>
+
+      <h3>
+        Unable to load employees
+      </h3>
+
+      <p>
+        {{ errorMessage }}
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="retry()"
+      >
+        Try Again
+      </button>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- EMPLOYEE TABLE -->
+    <!-- ========================= -->
+
+    <div
+      class="table-wrapper"
+      *ngIf="
+        !loading &&
+        !errorMessage &&
+        filteredEmployees.length > 0
+      "
+    >
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Employee
+            </th>
+
+            <th>
+              Employee ID
+            </th>
+
+            <th>
+              Department
+            </th>
+
+            <th>
+              Position
+            </th>
+
+            <th>
+              Email
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Actions
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr
+            *ngFor="let employee of filteredEmployees"
+          >
+
+            <!-- EMPLOYEE -->
+
+            <td>
+
+              <div class="employee-info">
+
+                <div class="employee-avatar">
+
+                  {{
+                    (employee.name || 'E')
+                      .charAt(0)
+                      .toUpperCase()
+                  }}
+
+                </div>
+
+
+                <div class="employee-name">
+
+                  <strong>
+                    {{ employee.name }}
+                  </strong>
+
+                  <span>
+                    Employee
+                  </span>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <!-- EMPLOYEE ID -->
+
+            <td>
+
+              <span class="employee-id">
+                {{ employee.id }}
+              </span>
+
+            </td>
+
+
+            <!-- DEPARTMENT -->
+
+            <td>
+
+              <span class="department">
+                {{ employee.department }}
+              </span>
+
+            </td>
+
+
+            <!-- POSITION -->
+
+            <td>
+
+              {{ employee.position }}
+
+            </td>
+
+
+            <!-- EMAIL -->
+
+            <td>
+
+              {{ employee.email }}
+
+            </td>
+
+
+            <!-- STATUS -->
+
+            <td>
+
+              <span
+                *ngIf="
+                  !employee.status ||
+                  employee.status === 'Active'
+                "
+                class="status-badge active"
+              >
+                Active
+              </span>
+
+              <span
+                *ngIf="
+                  employee.status &&
+                  employee.status !== 'Active'
+                "
+                class="status-badge inactive"
+              >
+                {{ employee.status }}
+              </span>
+
+            </td>
+
+
+            <!-- ACTIONS -->
+
+            <td>
+
+              <div class="action-buttons">
+
+                <button
+                  type="button"
+                  class="action-btn view"
+                  (click)="viewEmployee(employee)"
+                  title="View employee"
+                >
+                  View
+                </button>
+
+
+                <button
+                  type="button"
+                  class="action-btn edit"
+                  (click)="editEmployee(employee.id)"
+                  title="Edit employee"
+                >
+                  Edit
+                </button>
+
+
+                <button
+                  type="button"
+                  class="action-btn delete"
+                  (click)="deleteEmployee(employee.id)"
+                  title="Delete employee"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- EMPTY STATE -->
+    <!-- ========================= -->
+
+    <div
+      class="empty-state"
+      *ngIf="
+        !loading &&
+        !errorMessage &&
+        filteredEmployees.length === 0
+      "
+    >
+
+      <div class="empty-icon">
+        👥
+      </div>
+
+      <h3>
+        No employees found
+      </h3>
+
+      <p *ngIf="searchTerm">
+        No employees match "{{ searchTerm }}".
+      </p>
+
+      <p *ngIf="!searchTerm">
+        There are currently no employees in the system.
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="addEmployee()"
+      >
+        + Add Employee
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

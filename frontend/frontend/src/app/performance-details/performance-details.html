@@ -1,0 +1,365 @@
+<div class="page-container">
+
+  <div class="page-header">
+
+    <div>
+      <h1>
+        {{ isEditMode ? 'Edit Performance Review' : 'Performance Review' }}
+      </h1>
+
+      <p>
+        {{
+          isEditMode
+            ? 'Update employee performance and review information.'
+            : 'Create a new employee performance review.'
+        }}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="cancel()"
+    >
+      ← Back to Performance
+    </button>
+
+  </div>
+
+  <div class="card form-card">
+
+    <div class="section-title">
+
+      <h2>Employee Information</h2>
+
+      <p>
+        Select the employee and review period.
+      </p>
+
+    </div>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label for="employee">
+          Employee <span class="required">*</span>
+        </label>
+
+        <select
+          id="employee"
+          [(ngModel)]="selectedEmployeeId"
+          [disabled]="isReadOnly"
+        >
+
+          <option value="">
+            Select employee
+          </option>
+
+          <option
+            *ngFor="let employee of employees"
+            [value]="employee.id"
+          >
+            {{ employee.name }} — {{ employee.id }}
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="reviewPeriod">
+          Review Period <span class="required">*</span>
+        </label>
+
+        <select
+          id="reviewPeriod"
+          [(ngModel)]="reviewPeriod"
+          [disabled]="isReadOnly"
+        >
+
+          <option value="">
+            Select review period
+          </option>
+
+          <option value="2026 Annual Review">
+            2026 Annual Review
+          </option>
+
+          <option value="2026 Mid-Year Review">
+            2026 Mid-Year Review
+          </option>
+
+          <option value="2025 Annual Review">
+            2025 Annual Review
+          </option>
+
+          <option value="2025 Mid-Year Review">
+            2025 Mid-Year Review
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="manager">
+          Reviewing Manager <span class="required">*</span>
+        </label>
+
+        <input
+          id="manager"
+          type="text"
+          [(ngModel)]="manager"
+          [disabled]="isReadOnly"
+          placeholder="Enter manager name"
+        />
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="status">
+          Review Status
+        </label>
+
+        <select
+          id="status"
+          [(ngModel)]="status"
+          [disabled]="isReadOnly"
+        >
+
+          <option value="Pending">
+            Pending
+          </option>
+
+          <option value="In Progress">
+            In Progress
+          </option>
+
+          <option value="Completed">
+            Completed
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <div
+      class="employee-info"
+      *ngIf="selectedEmployee"
+    >
+
+      <div class="employee-avatar">
+        {{ selectedEmployee.name.charAt(0) }}
+      </div>
+
+      <div>
+
+        <strong>
+          {{ selectedEmployee.name }}
+        </strong>
+
+        <span>
+          {{ selectedEmployee.id }}
+          •
+          {{ selectedEmployee.department }}
+          •
+          {{ selectedEmployee.position }}
+        </span>
+
+      </div>
+
+    </div>
+
+    <div class="section-title performance-section">
+
+      <h2>Performance Evaluation</h2>
+
+      <p>
+        Record the employee rating and goal completion.
+      </p>
+
+    </div>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+
+        <label for="rating">
+          Performance Rating <span class="required">*</span>
+        </label>
+
+        <div class="rating-input">
+
+          <input
+            id="rating"
+            type="number"
+            min="0"
+            max="5"
+            step="0.1"
+            [(ngModel)]="rating"
+            [disabled]="isReadOnly"
+          />
+
+          <span>
+            / 5
+          </span>
+
+        </div>
+
+        <div class="rating-preview">
+
+          <span
+            *ngFor="let star of getStars(rating)"
+            [class.filled]="star === 'filled'"
+          >
+            ★
+          </span>
+
+          <strong>
+            {{ rating | number:'1.1-1' }}
+          </strong>
+
+        </div>
+
+      </div>
+
+      <div class="form-group">
+
+        <label>
+          Goal Completion
+        </label>
+
+        <div class="goal-inputs">
+
+          <div>
+
+            <label for="goalsCompleted">
+              Completed
+            </label>
+
+            <input
+              id="goalsCompleted"
+              type="number"
+              min="0"
+              [max]="totalGoals"
+              [(ngModel)]="goalsCompleted"
+              (input)="calculateGoalPercentage()"
+              [disabled]="isReadOnly"
+            />
+
+          </div>
+
+          <span class="goal-divider">
+            /
+          </span>
+
+          <div>
+
+            <label for="totalGoals">
+              Total Goals
+            </label>
+
+            <input
+              id="totalGoals"
+              type="number"
+              min="1"
+              [(ngModel)]="totalGoals"
+              (input)="calculateGoalPercentage()"
+              [disabled]="isReadOnly"
+            />
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="goal-progress-card">
+
+      <div class="goal-progress-header">
+
+        <span>
+          Goal Completion
+        </span>
+
+        <strong>
+          {{ goalPercentage }}%
+        </strong>
+
+      </div>
+
+      <div class="progress-track">
+
+        <div
+          class="progress-fill"
+          [style.width.%]="goalPercentage"
+        ></div>
+
+      </div>
+
+      <div class="goal-progress-label">
+        {{ goalsCompleted }} of {{ totalGoals }} goals completed
+      </div>
+
+    </div>
+
+    <div class="form-group full-width">
+
+      <label for="comments">
+        Manager Comments
+      </label>
+
+      <textarea
+        id="comments"
+        rows="6"
+        maxlength="1000"
+        [(ngModel)]="comments"
+        [disabled]="isReadOnly"
+        placeholder="Enter performance feedback, achievements, improvement areas and other comments..."
+      ></textarea>
+
+      <div class="character-count">
+        {{ comments.length }} / 1000
+      </div>
+
+    </div>
+
+    <div
+      class="read-only-message"
+      *ngIf="isReadOnly"
+    >
+      This completed performance review is currently read-only.
+    </div>
+
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="cancel()"
+      >
+        Back
+      </button>
+
+      <button
+        *ngIf="!isReadOnly"
+        type="button"
+        class="btn btn-primary"
+        (click)="savePerformance()"
+      >
+        {{ isEditMode ? 'Update Review' : 'Save Review' }}
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

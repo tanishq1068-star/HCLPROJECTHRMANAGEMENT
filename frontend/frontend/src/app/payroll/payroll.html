@@ -1,0 +1,349 @@
+<div class="page-container">
+
+  <div class="page-header">
+
+    <div>
+      <h1>Payroll Management</h1>
+      <p>
+        Manage employee salaries, payroll processing and payment records.
+      </p>
+    </div>
+
+    <div class="header-actions">
+
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="processAllPending()"
+      >
+        Process Pending
+      </button>
+
+      <!-- FIXED -->
+      <a
+        routerLink="/add-payroll"
+        class="btn btn-primary"
+      >
+        + Add Payroll
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <div class="stat-icon">₹</div>
+      <div>
+        <span>Total Gross Salary</span>
+        <strong>
+          ₹{{ totalGrossSalary | number:'1.0-0' }}
+        </strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">₹</div>
+      <div>
+        <span>Total Net Salary</span>
+        <strong>
+          ₹{{ totalNetSalary | number:'1.0-0' }}
+        </strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">✓</div>
+      <div>
+        <span>Processed</span>
+        <strong>
+          {{ processedCount }}
+        </strong>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">!</div>
+      <div>
+        <span>Pending</span>
+        <strong>
+          {{ pendingCount }}
+        </strong>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card filters-card">
+
+    <div class="filters">
+
+      <div class="search-box">
+
+        <span class="search-icon">⌕</span>
+
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Search employee, ID or department..."
+        />
+
+      </div>
+
+      <div class="filter-group">
+
+        <label>Month</label>
+
+        <select [(ngModel)]="monthFilter">
+
+          <option value="All Months">
+            All Months
+          </option>
+
+          <option
+            *ngFor="let month of months"
+            [value]="month"
+          >
+            {{ month }}
+          </option>
+
+        </select>
+
+      </div>
+
+      <div class="filter-group">
+
+        <label>Status</label>
+
+        <select [(ngModel)]="statusFilter">
+
+          <option value="All Status">
+            All Status
+          </option>
+
+          <option value="Processed">
+            Processed
+          </option>
+
+          <option value="Pending">
+            Pending
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="card table-card">
+
+    <div class="table-header">
+
+      <div>
+        <h2>Payroll Records</h2>
+
+        <p>
+          {{ filteredPayroll.length }}
+          payroll record{{ filteredPayroll.length === 1 ? '' : 's' }}
+          found
+        </p>
+      </div>
+
+    </div>
+
+    <div
+      class="table-wrapper"
+      *ngIf="filteredPayroll.length > 0; else emptyState"
+    >
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Payroll ID</th>
+            <th>Employee</th>
+            <th>Department</th>
+            <th>Month</th>
+            <th>Basic Salary</th>
+            <th>Allowances</th>
+            <th>Deductions</th>
+            <th>Net Salary</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="let payroll of filteredPayroll"
+          >
+
+            <td>
+              <strong>
+                {{ payroll.id }}
+              </strong>
+            </td>
+
+            <td>
+
+              <div class="employee-cell">
+
+                <div class="employee-avatar">
+                  {{ payroll.employeeName.charAt(0) }}
+                </div>
+
+                <div>
+
+                  <strong>
+                    {{ payroll.employeeName }}
+                  </strong>
+
+                  <span>
+                    {{ payroll.employeeId }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+              {{ payroll.department }}
+            </td>
+
+            <td>
+              {{ payroll.month }}
+            </td>
+
+            <td>
+              ₹{{ payroll.basicSalary | number:'1.0-0' }}
+            </td>
+
+            <td class="positive-value">
+              +₹{{ payroll.allowances | number:'1.0-0' }}
+            </td>
+
+            <td class="negative-value">
+              -₹{{ payroll.deductions | number:'1.0-0' }}
+            </td>
+
+            <td>
+
+              <strong class="net-salary">
+                ₹{{ payroll.netSalary | number:'1.0-0' }}
+              </strong>
+
+            </td>
+
+            <td>
+
+              <span
+                class="status-badge"
+                [ngClass]="{
+                  'status-active':
+                    payroll.status === 'Processed',
+                  'status-pending':
+                    payroll.status === 'Pending'
+                }"
+              >
+                {{ payroll.status }}
+              </span>
+
+            </td>
+
+            <td>
+
+              <div class="action-buttons">
+
+                <a
+                  class="action-btn view"
+                  [routerLink]="[
+                    '/payroll-details',
+                    payroll.id
+                  ]"
+                  title="View payroll"
+                >
+                  View
+                </a>
+
+                <a
+                  class="action-btn edit"
+                  [routerLink]="[
+                    '/payroll-details',
+                    payroll.id
+                  ]"
+                  title="Edit payroll"
+                >
+                  Edit
+                </a>
+
+                <button
+                  *ngIf="payroll.status === 'Pending'"
+                  type="button"
+                  class="action-btn process"
+                  (click)="processPayroll(payroll.id)"
+                  title="Process payroll"
+                >
+                  Process
+                </button>
+
+                <button
+                  type="button"
+                  class="action-btn delete"
+                  (click)="deletePayroll(payroll.id)"
+                  title="Delete payroll"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <ng-template #emptyState>
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          ₹
+        </div>
+
+        <h3>
+          No payroll records found
+        </h3>
+
+        <p>
+          Try changing your search or filters,
+          or create a new payroll record.
+        </p>
+
+        <!-- FIXED -->
+        <a
+          routerLink="/add-payroll"
+          class="btn btn-primary"
+        >
+          + Add Payroll
+        </a>
+
+      </div>
+
+    </ng-template>
+
+  </div>
+
+</div>
